@@ -96,21 +96,14 @@ final readonly class LocationDetail1_2 implements SelfNormalizingModel
         if (array_key_exists('locationId', $data) && $data['locationId'] !== null) {
             $locationIdRaw = $data['locationId'];
             if (!is_string($locationIdRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "locationId" must be string, got %s.', get_debug_type($locationIdRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "locationId" must be string, got %s.', get_debug_type($locationIdRaw)));
             }
             $locationId = Some::create($locationIdRaw);
         }
         if (array_key_exists('locationContactAndAddress', $data) && $data['locationContactAndAddress'] !== null) {
             $locationContactAndAddressRaw = $data['locationContactAndAddress'];
             if (!is_array($locationContactAndAddressRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "locationContactAndAddress" must be object, got %s.',
-                        get_debug_type($locationContactAndAddressRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "locationContactAndAddress" must be object, got %s.', get_debug_type($locationContactAndAddressRaw)));
             }
             /** @var array<string, mixed> $locationContactAndAddressRawTyped */
             $locationContactAndAddressRawTyped = $locationContactAndAddressRaw;
@@ -121,9 +114,7 @@ final readonly class LocationDetail1_2 implements SelfNormalizingModel
         if (array_key_exists('locationType', $data) && $data['locationType'] !== null) {
             $locationTypeRaw = $data['locationType'];
             if (!is_string($locationTypeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "locationType" must be string, got %s.', get_debug_type($locationTypeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "locationType" must be string, got %s.', get_debug_type($locationTypeRaw)));
             }
             $locationType = Some::create(
                 LocationDetail1LocationTypeEnum::tryFrom($locationTypeRaw) ?? UnknownEnumValue::of($locationTypeRaw),
@@ -151,6 +142,19 @@ final readonly class LocationDetail1_2 implements SelfNormalizingModel
     }
 
     /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
+    }
+
+    /** @return array<int|string, mixed> */
     private function normalize(NormalizationTarget $normalizationTarget): array
     {
         /** @var array<int|string, mixed> $dataArray */
@@ -170,7 +174,7 @@ final readonly class LocationDetail1_2 implements SelfNormalizingModel
             $locationType = $locationTypeOption->get();
             $dataArray['locationType'] = $locationType->value;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

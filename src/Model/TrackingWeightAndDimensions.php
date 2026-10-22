@@ -85,15 +85,11 @@ final readonly class TrackingWeightAndDimensions implements SelfNormalizingModel
         if (array_key_exists('weight', $data) && $data['weight'] !== null) {
             $weightRaw = $data['weight'];
             if (!(is_array($weightRaw) && array_is_list($weightRaw))) {
-                throw new MalformedDataException(
-                    sprintf('Property "weight" must be list, got %s.', get_debug_type($weightRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "weight" must be list, got %s.', get_debug_type($weightRaw)));
             }
             $weight = Some::create(array_map(static function (mixed $value): Weight {
                 if (!is_array($value)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be object, got %s.', get_debug_type($value)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value)));
                 }
                 /** @var array<string, mixed> $valueTyped */
                 $valueTyped = $value;
@@ -104,15 +100,11 @@ final readonly class TrackingWeightAndDimensions implements SelfNormalizingModel
         if (array_key_exists('dimensions', $data) && $data['dimensions'] !== null) {
             $dimensionsRaw = $data['dimensions'];
             if (!(is_array($dimensionsRaw) && array_is_list($dimensionsRaw))) {
-                throw new MalformedDataException(
-                    sprintf('Property "dimensions" must be list, got %s.', get_debug_type($dimensionsRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "dimensions" must be list, got %s.', get_debug_type($dimensionsRaw)));
             }
             $dimensions = Some::create(array_map(static function (mixed $value_1): Dimensions {
                 if (!is_array($value_1)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be object, got %s.', get_debug_type($value_1)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value_1)));
                 }
                 /** @var array<string, mixed> $value_1Typed */
                 $value_1Typed = $value_1;
@@ -139,6 +131,19 @@ final readonly class TrackingWeightAndDimensions implements SelfNormalizingModel
     }
 
     /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
+    }
+
+    /** @return array<int|string, mixed> */
     private function normalize(NormalizationTarget $normalizationTarget): array
     {
         /** @var array<int|string, mixed> $dataArray */
@@ -161,7 +166,7 @@ final readonly class TrackingWeightAndDimensions implements SelfNormalizingModel
             }
             $dataArray['dimensions'] = $values_1;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

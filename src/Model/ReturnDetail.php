@@ -81,27 +81,18 @@ final readonly class ReturnDetail implements SelfNormalizingModel
         if (array_key_exists('authorizationName', $data) && $data['authorizationName'] !== null) {
             $authorizationNameRaw = $data['authorizationName'];
             if (!is_string($authorizationNameRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "authorizationName" must be string, got %s.',
-                        get_debug_type($authorizationNameRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "authorizationName" must be string, got %s.', get_debug_type($authorizationNameRaw)));
             }
             $authorizationName = Some::create($authorizationNameRaw);
         }
         if (array_key_exists('reasonDetail', $data) && $data['reasonDetail'] !== null) {
             $reasonDetailRaw = $data['reasonDetail'];
             if (!(is_array($reasonDetailRaw) && array_is_list($reasonDetailRaw))) {
-                throw new MalformedDataException(
-                    sprintf('Property "reasonDetail" must be list, got %s.', get_debug_type($reasonDetailRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "reasonDetail" must be list, got %s.', get_debug_type($reasonDetailRaw)));
             }
             $reasonDetail = Some::create(array_map(static function (mixed $value): ReasonDetail {
                 if (!is_array($value)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be object, got %s.', get_debug_type($value)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value)));
                 }
                 /** @var array<string, mixed> $valueTyped */
                 $valueTyped = $value;
@@ -128,6 +119,19 @@ final readonly class ReturnDetail implements SelfNormalizingModel
     }
 
     /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
+    }
+
+    /** @return array<int|string, mixed> */
     private function normalize(NormalizationTarget $normalizationTarget): array
     {
         /** @var array<int|string, mixed> $dataArray */
@@ -146,7 +150,7 @@ final readonly class ReturnDetail implements SelfNormalizingModel
             }
             $dataArray['reasonDetail'] = $values;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

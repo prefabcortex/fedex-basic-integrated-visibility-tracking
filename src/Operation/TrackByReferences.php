@@ -25,6 +25,7 @@ use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\BaseOperationTrait;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\ContentType;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\HeaderParameters;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\JsonBody;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\JsonRequestBody;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\Operation;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\OperationTrait;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\Payload;
@@ -60,14 +61,11 @@ use function in_array;
  *
  * @implements Operation<TrkcResponseVOReferenceNumber>
  */
-final class TrackByReferences implements Operation
+final readonly class TrackByReferences implements Operation
 {
     use BaseOperationTrait;
     use OperationTrait;
     use ValidatorTrait;
-    /** @var Option<FullSchemaTrackingReferences> */
-    private readonly Option $body;
-    private readonly TrackByReferencesHeaderParameters $headerParameters;
 
     /**
      * This endpoint returns tracking information based on alternate references other than Tracking
@@ -77,10 +75,10 @@ final class TrackByReferences implements Operation
      *
      * @param Option<FullSchemaTrackingReferences> $requestBody
      */
-    public function __construct(Option $requestBody, TrackByReferencesHeaderParameters $headerParameters)
-    {
-        $this->body = $requestBody;
-        $this->headerParameters = $headerParameters;
+    public function __construct(
+        private Option $requestBody,
+        private TrackByReferencesHeaderParameters $headerParameters,
+    ) {
     }
 
     #[Override]
@@ -102,13 +100,13 @@ final class TrackByReferences implements Operation
     #[Override]
     public function getPayload(StreamFactoryInterface $streamFactory, ValidationMode $validation): Payload
     {
-        if ($this->body->isDefined()) {
-            $body = $this->body->get();
+        if ($this->requestBody->isDefined()) {
+            $body = $this->requestBody->get();
             if (ValidationMode::Strict === $validation) {
-                $this->validate($body->toArray(), FullSchemaTrackingReferencesConstraint::constraints());
+                $this->validate($body->toRequestArray(), FullSchemaTrackingReferencesConstraint::constraints());
             }
 
-            return new Payload(['Content-Type' => ['application/json']], JsonBody::encode($body));
+            return new Payload(['Content-Type' => ['application/json']], JsonRequestBody::encode($body));
         }
 
         return new Payload([], '');
@@ -167,11 +165,7 @@ final class TrackByReferences implements Operation
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO401Constraint::constraints());
             }
-            throw new TrackByReferencesUnauthorizedException(
-                ErrorResponseVO401::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new TrackByReferencesUnauthorizedException(ErrorResponseVO401::fromArray($typedData), $response, $body);
         }
         if (403 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
@@ -192,22 +186,14 @@ final class TrackByReferences implements Operation
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO500Constraint::constraints());
             }
-            throw new TrackByReferencesInternalServerErrorException(
-                ErrorResponseVO500::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new TrackByReferencesInternalServerErrorException(ErrorResponseVO500::fromArray($typedData), $response, $body);
         }
         if (503 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO503Constraint::constraints());
             }
-            throw new TrackByReferencesServiceUnavailableException(
-                ErrorResponseVO503::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new TrackByReferencesServiceUnavailableException(ErrorResponseVO503::fromArray($typedData), $response, $body);
         }
         if (in_array($status, [200, 400, 401, 403, 404, 500, 503], true)) {
             throw new UnexpectedContentTypeException($response, $body);

@@ -112,39 +112,28 @@ final readonly class ShipmentContent implements SelfNormalizingModel
         if (array_key_exists('itemNumber', $data) && $data['itemNumber'] !== null) {
             $itemNumberRaw = $data['itemNumber'];
             if (!is_string($itemNumberRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "itemNumber" must be string, got %s.', get_debug_type($itemNumberRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "itemNumber" must be string, got %s.', get_debug_type($itemNumberRaw)));
             }
             $itemNumber = Some::create($itemNumberRaw);
         }
         if (array_key_exists('receivedQuantity', $data) && $data['receivedQuantity'] !== null) {
             $receivedQuantityRaw = $data['receivedQuantity'];
             if (!is_string($receivedQuantityRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "receivedQuantity" must be string, got %s.',
-                        get_debug_type($receivedQuantityRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "receivedQuantity" must be string, got %s.', get_debug_type($receivedQuantityRaw)));
             }
             $receivedQuantity = Some::create($receivedQuantityRaw);
         }
         if (array_key_exists('description', $data) && $data['description'] !== null) {
             $descriptionRaw = $data['description'];
             if (!is_string($descriptionRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "description" must be string, got %s.', get_debug_type($descriptionRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "description" must be string, got %s.', get_debug_type($descriptionRaw)));
             }
             $description = Some::create($descriptionRaw);
         }
         if (array_key_exists('partNumber', $data) && $data['partNumber'] !== null) {
             $partNumberRaw = $data['partNumber'];
             if (!is_string($partNumberRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "partNumber" must be string, got %s.', get_debug_type($partNumberRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "partNumber" must be string, got %s.', get_debug_type($partNumberRaw)));
             }
             $partNumber = Some::create($partNumberRaw);
         }
@@ -182,7 +171,7 @@ final readonly class ShipmentContent implements SelfNormalizingModel
             $partNumber = $partNumberOption->get();
             $dataArray['partNumber'] = $partNumber;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -191,6 +180,19 @@ final readonly class ShipmentContent implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): ShipmentContentBuilder

@@ -101,7 +101,7 @@ final class PostTrackV1NotificationExample
             // notificationDetail
             $notificationDetail,
             // notificationEventTypes
-            ['REPLACE_ME'],
+            ['ON_DELIVERY', 'ON_EXCEPTION', 'ON_ESTIMATED_DELIVERY'],
         )
             ->setRole('SHIPPER')
             ->setCurrentResultRequestedFlag(true)

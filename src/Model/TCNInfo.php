@@ -115,36 +115,28 @@ final readonly class TCNInfo implements SelfNormalizingModel
         if (array_key_exists('value', $data)) {
             $valueRaw = $data['value'];
             if (!is_string($valueRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "value" must be string, got %s.', get_debug_type($valueRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "value" must be string, got %s.', get_debug_type($valueRaw)));
             }
             $value = $valueRaw;
         }
         if (array_key_exists('carrierCode', $data) && $data['carrierCode'] !== null) {
             $carrierCodeRaw = $data['carrierCode'];
             if (!is_string($carrierCodeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "carrierCode" must be string, got %s.', get_debug_type($carrierCodeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "carrierCode" must be string, got %s.', get_debug_type($carrierCodeRaw)));
             }
             $carrierCode = Some::create($carrierCodeRaw);
         }
         if (array_key_exists('shipDateBegin', $data) && $data['shipDateBegin'] !== null) {
             $shipDateBeginRaw = $data['shipDateBegin'];
             if (!is_string($shipDateBeginRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "shipDateBegin" must be string, got %s.', get_debug_type($shipDateBeginRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "shipDateBegin" must be string, got %s.', get_debug_type($shipDateBeginRaw)));
             }
             $shipDateBegin = Some::create($shipDateBeginRaw);
         }
         if (array_key_exists('shipDateEnd', $data) && $data['shipDateEnd'] !== null) {
             $shipDateEndRaw = $data['shipDateEnd'];
             if (!is_string($shipDateEndRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "shipDateEnd" must be string, got %s.', get_debug_type($shipDateEndRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "shipDateEnd" must be string, got %s.', get_debug_type($shipDateEndRaw)));
             }
             $shipDateEnd = Some::create($shipDateEndRaw);
         }
@@ -181,7 +173,7 @@ final readonly class TCNInfo implements SelfNormalizingModel
             $shipDateEnd = $shipDateEndOption->get();
             $dataArray['shipDateEnd'] = $shipDateEnd;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -190,6 +182,19 @@ final readonly class TCNInfo implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): TCNInfoBuilder

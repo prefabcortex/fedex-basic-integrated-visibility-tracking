@@ -119,12 +119,7 @@ final readonly class TrackDocumentSpecification implements SelfNormalizingModel
         if (array_key_exists('trackingNumberInfo', $data)) {
             $trackingNumberInfoRaw = $data['trackingNumberInfo'];
             if (!is_array($trackingNumberInfoRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "trackingNumberInfo" must be object, got %s.',
-                        get_debug_type($trackingNumberInfoRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "trackingNumberInfo" must be object, got %s.', get_debug_type($trackingNumberInfoRaw)));
             }
             /** @var non-empty-array<string, mixed> $trackingNumberInfoRawTyped */
             $trackingNumberInfoRawTyped = $trackingNumberInfoRaw;
@@ -133,27 +128,21 @@ final readonly class TrackDocumentSpecification implements SelfNormalizingModel
         if (array_key_exists('shipDateBegin', $data) && $data['shipDateBegin'] !== null) {
             $shipDateBeginRaw = $data['shipDateBegin'];
             if (!is_string($shipDateBeginRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "shipDateBegin" must be string, got %s.', get_debug_type($shipDateBeginRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "shipDateBegin" must be string, got %s.', get_debug_type($shipDateBeginRaw)));
             }
             $shipDateBegin = Some::create($shipDateBeginRaw);
         }
         if (array_key_exists('shipDateEnd', $data) && $data['shipDateEnd'] !== null) {
             $shipDateEndRaw = $data['shipDateEnd'];
             if (!is_string($shipDateEndRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "shipDateEnd" must be string, got %s.', get_debug_type($shipDateEndRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "shipDateEnd" must be string, got %s.', get_debug_type($shipDateEndRaw)));
             }
             $shipDateEnd = Some::create($shipDateEndRaw);
         }
         if (array_key_exists('accountNumber', $data) && $data['accountNumber'] !== null) {
             $accountNumberRaw = $data['accountNumber'];
             if (!is_string($accountNumberRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "accountNumber" must be string, got %s.', get_debug_type($accountNumberRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "accountNumber" must be string, got %s.', get_debug_type($accountNumberRaw)));
             }
             $accountNumber = Some::create($accountNumberRaw);
         }
@@ -161,7 +150,7 @@ final readonly class TrackDocumentSpecification implements SelfNormalizingModel
             $data,
             ['trackingNumberInfo' => true, 'shipDateBegin' => true, 'shipDateEnd' => true, 'accountNumber' => true],
         );
-        if ($trackingNumberInfo === null) {
+        if (!$trackingNumberInfo instanceof TrackingNumberInfo) {
             throw new MalformedDataException('Required property "trackingNumberInfo" is missing from the document.');
         }
 
@@ -179,6 +168,19 @@ final readonly class TrackDocumentSpecification implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->normalize(NormalizationTarget::Json);
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
     }
 
     /** @return array<int|string, mixed> */
@@ -202,7 +204,7 @@ final readonly class TrackDocumentSpecification implements SelfNormalizingModel
             $accountNumber = $accountNumberOption->get();
             $dataArray['accountNumber'] = $accountNumber;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

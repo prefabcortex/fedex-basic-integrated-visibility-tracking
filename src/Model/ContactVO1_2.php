@@ -97,27 +97,21 @@ final readonly class ContactVO1_2 implements SelfNormalizingModel
         if (array_key_exists('personName', $data) && $data['personName'] !== null) {
             $personNameRaw = $data['personName'];
             if (!is_string($personNameRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "personName" must be string, got %s.', get_debug_type($personNameRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "personName" must be string, got %s.', get_debug_type($personNameRaw)));
             }
             $personName = Some::create($personNameRaw);
         }
         if (array_key_exists('phoneNumber', $data) && $data['phoneNumber'] !== null) {
             $phoneNumberRaw = $data['phoneNumber'];
             if (!is_string($phoneNumberRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "phoneNumber" must be string, got %s.', get_debug_type($phoneNumberRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "phoneNumber" must be string, got %s.', get_debug_type($phoneNumberRaw)));
             }
             $phoneNumber = Some::create($phoneNumberRaw);
         }
         if (array_key_exists('companyName', $data) && $data['companyName'] !== null) {
             $companyNameRaw = $data['companyName'];
             if (!is_string($companyNameRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "companyName" must be string, got %s.', get_debug_type($companyNameRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "companyName" must be string, got %s.', get_debug_type($companyNameRaw)));
             }
             $companyName = Some::create($companyNameRaw);
         }
@@ -150,7 +144,7 @@ final readonly class ContactVO1_2 implements SelfNormalizingModel
             $companyName = $companyNameOption->get();
             $dataArray['companyName'] = $companyName;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -159,6 +153,19 @@ final readonly class ContactVO1_2 implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): ContactVO1_2Builder

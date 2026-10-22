@@ -130,24 +130,14 @@ final readonly class FullSchemaMultiplePieceShipment implements SelfNormalizingM
         if (array_key_exists('includeDetailedScans', $data) && $data['includeDetailedScans'] !== null) {
             $includeDetailedScansRaw = $data['includeDetailedScans'];
             if (!is_bool($includeDetailedScansRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "includeDetailedScans" must be bool, got %s.',
-                        get_debug_type($includeDetailedScansRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "includeDetailedScans" must be bool, got %s.', get_debug_type($includeDetailedScansRaw)));
             }
             $includeDetailedScans = Some::create($includeDetailedScansRaw);
         }
         if (array_key_exists('masterTrackingNumberInfo', $data)) {
             $masterTrackingNumberInfoRaw = $data['masterTrackingNumberInfo'];
             if (!is_array($masterTrackingNumberInfoRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "masterTrackingNumberInfo" must be object, got %s.',
-                        get_debug_type($masterTrackingNumberInfoRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "masterTrackingNumberInfo" must be object, got %s.', get_debug_type($masterTrackingNumberInfoRaw)));
             }
             /** @var non-empty-array<string, mixed> $masterTrackingNumberInfoRawTyped */
             $masterTrackingNumberInfoRawTyped = $masterTrackingNumberInfoRaw;
@@ -156,9 +146,7 @@ final readonly class FullSchemaMultiplePieceShipment implements SelfNormalizingM
         if (array_key_exists('associatedType', $data)) {
             $associatedTypeRaw = $data['associatedType'];
             if (!is_string($associatedTypeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "associatedType" must be string, got %s.', get_debug_type($associatedTypeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "associatedType" must be string, got %s.', get_debug_type($associatedTypeRaw)));
             }
             $associatedType = FullSchemaMultiplePieceShipmentAssociatedType::tryFrom($associatedTypeRaw)
                 ?? UnknownEnumValue::of($associatedTypeRaw);
@@ -166,9 +154,7 @@ final readonly class FullSchemaMultiplePieceShipment implements SelfNormalizingM
         if (array_key_exists('pagingDetails', $data) && $data['pagingDetails'] !== null) {
             $pagingDetailsRaw = $data['pagingDetails'];
             if (!is_array($pagingDetailsRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "pagingDetails" must be object, got %s.', get_debug_type($pagingDetailsRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "pagingDetails" must be object, got %s.', get_debug_type($pagingDetailsRaw)));
             }
             /** @var array<string, mixed> $pagingDetailsRawTyped */
             $pagingDetailsRawTyped = $pagingDetailsRaw;
@@ -183,10 +169,8 @@ final readonly class FullSchemaMultiplePieceShipment implements SelfNormalizingM
                 'pagingDetails' => true,
             ],
         );
-        if ($masterTrackingNumberInfo === null) {
-            throw new MalformedDataException(
-                'Required property "masterTrackingNumberInfo" is missing from the document.',
-            );
+        if (!$masterTrackingNumberInfo instanceof MasterTrackingInfo) {
+            throw new MalformedDataException('Required property "masterTrackingNumberInfo" is missing from the document.');
         }
         if ($associatedType === null) {
             throw new MalformedDataException('Required property "associatedType" is missing from the document.');
@@ -215,6 +199,19 @@ final readonly class FullSchemaMultiplePieceShipment implements SelfNormalizingM
     }
 
     /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
+    }
+
+    /** @return array<int|string, mixed> */
     private function normalize(NormalizationTarget $normalizationTarget): array
     {
         /** @var array<int|string, mixed> $dataArray */
@@ -231,7 +228,7 @@ final readonly class FullSchemaMultiplePieceShipment implements SelfNormalizingM
             $pagingDetails = $pagingDetailsOption->get();
             $dataArray['pagingDetails'] = $normalizationTarget->model($pagingDetails);
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

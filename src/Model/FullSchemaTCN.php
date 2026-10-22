@@ -80,9 +80,7 @@ final readonly class FullSchemaTCN implements SelfNormalizingModel
         if (array_key_exists('tcnInfo', $data)) {
             $tcnInfoRaw = $data['tcnInfo'];
             if (!is_array($tcnInfoRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "tcnInfo" must be object, got %s.', get_debug_type($tcnInfoRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "tcnInfo" must be object, got %s.', get_debug_type($tcnInfoRaw)));
             }
             /** @var non-empty-array<string, mixed> $tcnInfoRawTyped */
             $tcnInfoRawTyped = $tcnInfoRaw;
@@ -91,17 +89,12 @@ final readonly class FullSchemaTCN implements SelfNormalizingModel
         if (array_key_exists('includeDetailedScans', $data) && $data['includeDetailedScans'] !== null) {
             $includeDetailedScansRaw = $data['includeDetailedScans'];
             if (!is_bool($includeDetailedScansRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "includeDetailedScans" must be bool, got %s.',
-                        get_debug_type($includeDetailedScansRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "includeDetailedScans" must be bool, got %s.', get_debug_type($includeDetailedScansRaw)));
             }
             $includeDetailedScans = Some::create($includeDetailedScansRaw);
         }
         $additionalProperties = array_diff_key($data, ['tcnInfo' => true, 'includeDetailedScans' => true]);
-        if ($tcnInfo === null) {
+        if (!$tcnInfo instanceof TCNInfo) {
             throw new MalformedDataException('Required property "tcnInfo" is missing from the document.');
         }
 
@@ -122,6 +115,19 @@ final readonly class FullSchemaTCN implements SelfNormalizingModel
     }
 
     /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
+    }
+
+    /** @return array<int|string, mixed> */
     private function normalize(NormalizationTarget $normalizationTarget): array
     {
         /** @var array<int|string, mixed> $dataArray */
@@ -132,7 +138,7 @@ final readonly class FullSchemaTCN implements SelfNormalizingModel
             $includeDetailedScans = $includeDetailedScansOption->get();
             $dataArray['includeDetailedScans'] = $includeDetailedScans;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

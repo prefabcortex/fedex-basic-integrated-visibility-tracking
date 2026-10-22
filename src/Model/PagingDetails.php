@@ -103,18 +103,14 @@ final readonly class PagingDetails implements SelfNormalizingModel
         if (array_key_exists('resultsPerPage', $data) && $data['resultsPerPage'] !== null) {
             $resultsPerPageRaw = $data['resultsPerPage'];
             if (!is_int($resultsPerPageRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "resultsPerPage" must be int, got %s.', get_debug_type($resultsPerPageRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "resultsPerPage" must be int, got %s.', get_debug_type($resultsPerPageRaw)));
             }
             $resultsPerPage = Some::create($resultsPerPageRaw);
         }
         if (array_key_exists('pagingToken', $data) && $data['pagingToken'] !== null) {
             $pagingTokenRaw = $data['pagingToken'];
             if (!is_string($pagingTokenRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "pagingToken" must be string, got %s.', get_debug_type($pagingTokenRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "pagingToken" must be string, got %s.', get_debug_type($pagingTokenRaw)));
             }
             $pagingToken = Some::create($pagingTokenRaw);
         }
@@ -139,7 +135,7 @@ final readonly class PagingDetails implements SelfNormalizingModel
             $pagingToken = $pagingTokenOption->get();
             $dataArray['pagingToken'] = $pagingToken;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -148,6 +144,19 @@ final readonly class PagingDetails implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): PagingDetailsBuilder

@@ -96,18 +96,14 @@ final readonly class TimeWindow implements SelfNormalizingModel
         if (array_key_exists('description', $data) && $data['description'] !== null) {
             $descriptionRaw = $data['description'];
             if (!is_string($descriptionRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "description" must be string, got %s.', get_debug_type($descriptionRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "description" must be string, got %s.', get_debug_type($descriptionRaw)));
             }
             $description = Some::create($descriptionRaw);
         }
         if (array_key_exists('window', $data) && $data['window'] !== null) {
             $windowRaw = $data['window'];
             if (!is_array($windowRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "window" must be object, got %s.', get_debug_type($windowRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "window" must be object, got %s.', get_debug_type($windowRaw)));
             }
             /** @var array<string, mixed> $windowRawTyped */
             $windowRawTyped = $windowRaw;
@@ -116,9 +112,7 @@ final readonly class TimeWindow implements SelfNormalizingModel
         if (array_key_exists('type', $data) && $data['type'] !== null) {
             $typeRaw = $data['type'];
             if (!is_string($typeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)));
             }
             $type = Some::create(TimeWindowType::tryFrom($typeRaw) ?? UnknownEnumValue::of($typeRaw));
         }
@@ -141,6 +135,19 @@ final readonly class TimeWindow implements SelfNormalizingModel
     }
 
     /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
+    }
+
+    /** @return array<int|string, mixed> */
     private function normalize(NormalizationTarget $normalizationTarget): array
     {
         /** @var array<int|string, mixed> $dataArray */
@@ -160,7 +167,7 @@ final readonly class TimeWindow implements SelfNormalizingModel
             $type = $typeOption->get();
             $dataArray['type'] = $type->value;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

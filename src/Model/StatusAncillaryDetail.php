@@ -114,42 +114,28 @@ final readonly class StatusAncillaryDetail implements SelfNormalizingModel
         if (array_key_exists('reason', $data) && $data['reason'] !== null) {
             $reasonRaw = $data['reason'];
             if (!is_string($reasonRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "reason" must be string, got %s.', get_debug_type($reasonRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "reason" must be string, got %s.', get_debug_type($reasonRaw)));
             }
             $reason = Some::create($reasonRaw);
         }
         if (array_key_exists('reasonDescription', $data) && $data['reasonDescription'] !== null) {
             $reasonDescriptionRaw = $data['reasonDescription'];
             if (!is_string($reasonDescriptionRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "reasonDescription" must be string, got %s.',
-                        get_debug_type($reasonDescriptionRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "reasonDescription" must be string, got %s.', get_debug_type($reasonDescriptionRaw)));
             }
             $reasonDescription = Some::create($reasonDescriptionRaw);
         }
         if (array_key_exists('action', $data) && $data['action'] !== null) {
             $actionRaw = $data['action'];
             if (!is_string($actionRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "action" must be string, got %s.', get_debug_type($actionRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "action" must be string, got %s.', get_debug_type($actionRaw)));
             }
             $action = Some::create($actionRaw);
         }
         if (array_key_exists('actionDescription', $data) && $data['actionDescription'] !== null) {
             $actionDescriptionRaw = $data['actionDescription'];
             if (!is_string($actionDescriptionRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "actionDescription" must be string, got %s.',
-                        get_debug_type($actionDescriptionRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "actionDescription" must be string, got %s.', get_debug_type($actionDescriptionRaw)));
             }
             $actionDescription = Some::create($actionDescriptionRaw);
         }
@@ -187,7 +173,7 @@ final readonly class StatusAncillaryDetail implements SelfNormalizingModel
             $actionDescription = $actionDescriptionOption->get();
             $dataArray['actionDescription'] = $actionDescription;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -196,6 +182,19 @@ final readonly class StatusAncillaryDetail implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): StatusAncillaryDetailBuilder

@@ -138,9 +138,7 @@ final readonly class SPODResponseVO implements SelfNormalizingModel
         if (array_key_exists('localization', $data) && $data['localization'] !== null) {
             $localizationRaw = $data['localization'];
             if (!is_array($localizationRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "localization" must be object, got %s.', get_debug_type($localizationRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "localization" must be object, got %s.', get_debug_type($localizationRaw)));
             }
             /** @var non-empty-array<string, mixed> $localizationRawTyped */
             $localizationRawTyped = $localizationRaw;
@@ -149,33 +147,25 @@ final readonly class SPODResponseVO implements SelfNormalizingModel
         if (array_key_exists('documentType', $data) && $data['documentType'] !== null) {
             $documentTypeRaw = $data['documentType'];
             if (!is_string($documentTypeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "documentType" must be string, got %s.', get_debug_type($documentTypeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "documentType" must be string, got %s.', get_debug_type($documentTypeRaw)));
             }
             $documentType = Some::create($documentTypeRaw);
         }
         if (array_key_exists('documentFormat', $data) && $data['documentFormat'] !== null) {
             $documentFormatRaw = $data['documentFormat'];
             if (!is_string($documentFormatRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "documentFormat" must be string, got %s.', get_debug_type($documentFormatRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "documentFormat" must be string, got %s.', get_debug_type($documentFormatRaw)));
             }
             $documentFormat = Some::create($documentFormatRaw);
         }
         if (array_key_exists('document', $data) && $data['document'] !== null) {
             $documentRaw = $data['document'];
             if (!(is_array($documentRaw) && array_is_list($documentRaw))) {
-                throw new MalformedDataException(
-                    sprintf('Property "document" must be list, got %s.', get_debug_type($documentRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "document" must be list, got %s.', get_debug_type($documentRaw)));
             }
             $document = Some::create(array_map(static function (mixed $value): string {
                 if (!is_string($value)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be string, got %s.', get_debug_type($value)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be string, got %s.', get_debug_type($value)));
                 }
 
                 return $value;
@@ -184,15 +174,11 @@ final readonly class SPODResponseVO implements SelfNormalizingModel
         if (array_key_exists('alerts', $data) && $data['alerts'] !== null) {
             $alertsRaw = $data['alerts'];
             if (!(is_array($alertsRaw) && array_is_list($alertsRaw))) {
-                throw new MalformedDataException(
-                    sprintf('Property "alerts" must be list, got %s.', get_debug_type($alertsRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "alerts" must be list, got %s.', get_debug_type($alertsRaw)));
             }
             $alerts = Some::create(array_map(static function (mixed $value_1): Alert {
                 if (!is_array($value_1)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be object, got %s.', get_debug_type($value_1)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value_1)));
                 }
                 /** @var array<string, mixed> $value_1Typed */
                 $value_1Typed = $value_1;
@@ -228,6 +214,19 @@ final readonly class SPODResponseVO implements SelfNormalizingModel
     }
 
     /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
+    }
+
+    /** @return array<int|string, mixed> */
     private function normalize(NormalizationTarget $normalizationTarget): array
     {
         /** @var array<int|string, mixed> $dataArray */
@@ -250,11 +249,7 @@ final readonly class SPODResponseVO implements SelfNormalizingModel
         $documentOption = $this->document;
         if ($documentOption->isDefined()) {
             $document = $documentOption->get();
-            $values = [];
-            foreach ($document as $value) {
-                $values[] = $value;
-            }
-            $dataArray['document'] = $values;
+            $dataArray['document'] = $document;
         }
         $alertsOption = $this->alerts;
         if ($alertsOption->isDefined()) {
@@ -265,7 +260,7 @@ final readonly class SPODResponseVO implements SelfNormalizingModel
             }
             $dataArray['alerts'] = $values_1;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

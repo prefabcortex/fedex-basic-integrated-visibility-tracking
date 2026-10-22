@@ -101,24 +101,18 @@ final readonly class PackageIdentifier implements SelfNormalizingModel
         if (array_key_exists('type', $data) && $data['type'] !== null) {
             $typeRaw = $data['type'];
             if (!is_string($typeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)));
             }
             $type = Some::create(PackageIdentifierType::tryFrom($typeRaw) ?? UnknownEnumValue::of($typeRaw));
         }
         if (array_key_exists('value', $data) && $data['value'] !== null) {
             $valueRaw = $data['value'];
             if (!(is_array($valueRaw) && array_is_list($valueRaw))) {
-                throw new MalformedDataException(
-                    sprintf('Property "value" must be list, got %s.', get_debug_type($valueRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "value" must be list, got %s.', get_debug_type($valueRaw)));
             }
             $value = Some::create(array_map(static function (mixed $value_1): string {
                 if (!is_string($value_1)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be string, got %s.', get_debug_type($value_1)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be string, got %s.', get_debug_type($value_1)));
                 }
 
                 return $value_1;
@@ -127,12 +121,7 @@ final readonly class PackageIdentifier implements SelfNormalizingModel
         if (array_key_exists('trackingNumberUniqueId', $data) && $data['trackingNumberUniqueId'] !== null) {
             $trackingNumberUniqueIdRaw = $data['trackingNumberUniqueId'];
             if (!is_string($trackingNumberUniqueIdRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "trackingNumberUniqueId" must be string, got %s.',
-                        get_debug_type($trackingNumberUniqueIdRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "trackingNumberUniqueId" must be string, got %s.', get_debug_type($trackingNumberUniqueIdRaw)));
             }
             $trackingNumberUniqueId = Some::create($trackingNumberUniqueIdRaw);
         }
@@ -158,18 +147,14 @@ final readonly class PackageIdentifier implements SelfNormalizingModel
         $valueOption = $this->value;
         if ($valueOption->isDefined()) {
             $value = $valueOption->get();
-            $values = [];
-            foreach ($value as $value_1) {
-                $values[] = $value_1;
-            }
-            $dataArray['value'] = $values;
+            $dataArray['value'] = $value;
         }
         $trackingNumberUniqueIdOption = $this->trackingNumberUniqueId;
         if ($trackingNumberUniqueIdOption->isDefined()) {
             $trackingNumberUniqueId = $trackingNumberUniqueIdOption->get();
             $dataArray['trackingNumberUniqueId'] = $trackingNumberUniqueId;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -178,6 +163,19 @@ final readonly class PackageIdentifier implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): PackageIdentifierBuilder

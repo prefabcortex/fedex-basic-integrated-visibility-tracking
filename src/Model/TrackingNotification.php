@@ -126,12 +126,7 @@ final readonly class TrackingNotification implements SelfNormalizingModel
         if (array_key_exists('notificationDetail', $data)) {
             $notificationDetailRaw = $data['notificationDetail'];
             if (!is_array($notificationDetailRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "notificationDetail" must be object, got %s.',
-                        get_debug_type($notificationDetailRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "notificationDetail" must be object, got %s.', get_debug_type($notificationDetailRaw)));
             }
             /** @var non-empty-array<string, mixed> $notificationDetailRawTyped */
             $notificationDetailRawTyped = $notificationDetailRaw;
@@ -140,27 +135,18 @@ final readonly class TrackingNotification implements SelfNormalizingModel
         if (array_key_exists('role', $data) && $data['role'] !== null) {
             $roleRaw = $data['role'];
             if (!is_string($roleRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "role" must be string, got %s.', get_debug_type($roleRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "role" must be string, got %s.', get_debug_type($roleRaw)));
             }
             $role = Some::create($roleRaw);
         }
         if (array_key_exists('notificationEventTypes', $data)) {
             $notificationEventTypesRaw = $data['notificationEventTypes'];
             if (!(is_array($notificationEventTypesRaw) && array_is_list($notificationEventTypesRaw))) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "notificationEventTypes" must be list, got %s.',
-                        get_debug_type($notificationEventTypesRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "notificationEventTypes" must be list, got %s.', get_debug_type($notificationEventTypesRaw)));
             }
             $notificationEventTypes = array_map(static function (mixed $value): string {
                 if (!is_string($value)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be string, got %s.', get_debug_type($value)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be string, got %s.', get_debug_type($value)));
                 }
 
                 return $value;
@@ -169,12 +155,7 @@ final readonly class TrackingNotification implements SelfNormalizingModel
         if (array_key_exists('currentResultRequestedFlag', $data) && $data['currentResultRequestedFlag'] !== null) {
             $currentResultRequestedFlagRaw = $data['currentResultRequestedFlag'];
             if (!is_bool($currentResultRequestedFlagRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "currentResultRequestedFlag" must be bool, got %s.',
-                        get_debug_type($currentResultRequestedFlagRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "currentResultRequestedFlag" must be bool, got %s.', get_debug_type($currentResultRequestedFlagRaw)));
             }
             $currentResultRequestedFlag = Some::create($currentResultRequestedFlagRaw);
         }
@@ -187,13 +168,11 @@ final readonly class TrackingNotification implements SelfNormalizingModel
                 'currentResultRequestedFlag' => true,
             ],
         );
-        if ($notificationDetail === null) {
+        if (!$notificationDetail instanceof TrackingNotificationDetail) {
             throw new MalformedDataException('Required property "notificationDetail" is missing from the document.');
         }
         if ($notificationEventTypes === null) {
-            throw new MalformedDataException(
-                'Required property "notificationEventTypes" is missing from the document.',
-            );
+            throw new MalformedDataException('Required property "notificationEventTypes" is missing from the document.');
         }
 
         return new self(
@@ -219,6 +198,19 @@ final readonly class TrackingNotification implements SelfNormalizingModel
     }
 
     /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
+    }
+
+    /** @return array<int|string, mixed> */
     private function normalize(NormalizationTarget $normalizationTarget): array
     {
         /** @var array<int|string, mixed> $dataArray */
@@ -229,17 +221,13 @@ final readonly class TrackingNotification implements SelfNormalizingModel
             $role = $roleOption->get();
             $dataArray['role'] = $role;
         }
-        $values = [];
-        foreach ($this->notificationEventTypes as $value) {
-            $values[] = $value;
-        }
-        $dataArray['notificationEventTypes'] = $values;
+        $dataArray['notificationEventTypes'] = $this->notificationEventTypes;
         $currentResultRequestedFlagOption = $this->currentResultRequestedFlag;
         if ($currentResultRequestedFlagOption->isDefined()) {
             $currentResultRequestedFlag = $currentResultRequestedFlagOption->get();
             $dataArray['currentResultRequestedFlag'] = $currentResultRequestedFlag;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

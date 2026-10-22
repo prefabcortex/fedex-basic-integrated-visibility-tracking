@@ -97,21 +97,14 @@ final readonly class LocationDetail implements SelfNormalizingModel
         if (array_key_exists('locationId', $data) && $data['locationId'] !== null) {
             $locationIdRaw = $data['locationId'];
             if (!is_string($locationIdRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "locationId" must be string, got %s.', get_debug_type($locationIdRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "locationId" must be string, got %s.', get_debug_type($locationIdRaw)));
             }
             $locationId = Some::create($locationIdRaw);
         }
         if (array_key_exists('locationContactAndAddress', $data)) {
             $locationContactAndAddressRaw = $data['locationContactAndAddress'];
             if (!is_array($locationContactAndAddressRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "locationContactAndAddress" must be object, got %s.',
-                        get_debug_type($locationContactAndAddressRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "locationContactAndAddress" must be object, got %s.', get_debug_type($locationContactAndAddressRaw)));
             }
             /** @var non-empty-array<string, mixed> $locationContactAndAddressRawTyped */
             $locationContactAndAddressRawTyped = $locationContactAndAddressRaw;
@@ -120,9 +113,7 @@ final readonly class LocationDetail implements SelfNormalizingModel
         if (array_key_exists('locationType', $data)) {
             $locationTypeRaw = $data['locationType'];
             if (!is_string($locationTypeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "locationType" must be string, got %s.', get_debug_type($locationTypeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "locationType" must be string, got %s.', get_debug_type($locationTypeRaw)));
             }
             $locationType = LocationDetailLocationType::tryFrom($locationTypeRaw)
                 ?? UnknownEnumValue::of($locationTypeRaw);
@@ -131,10 +122,8 @@ final readonly class LocationDetail implements SelfNormalizingModel
             $data,
             ['locationId' => true, 'locationContactAndAddress' => true, 'locationType' => true],
         );
-        if ($locationContactAndAddress === null) {
-            throw new MalformedDataException(
-                'Required property "locationContactAndAddress" is missing from the document.',
-            );
+        if (!$locationContactAndAddress instanceof ContactAndAddress) {
+            throw new MalformedDataException('Required property "locationContactAndAddress" is missing from the document.');
         }
         if ($locationType === null) {
             throw new MalformedDataException('Required property "locationType" is missing from the document.');
@@ -157,6 +146,19 @@ final readonly class LocationDetail implements SelfNormalizingModel
     }
 
     /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
+    }
+
+    /** @return array<int|string, mixed> */
     private function normalize(NormalizationTarget $normalizationTarget): array
     {
         /** @var array<int|string, mixed> $dataArray */
@@ -168,7 +170,7 @@ final readonly class LocationDetail implements SelfNormalizingModel
         }
         $dataArray['locationContactAndAddress'] = $normalizationTarget->model($this->locationContactAndAddress);
         $dataArray['locationType'] = $this->locationType->value;
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

@@ -83,12 +83,7 @@ final readonly class FullSchemaSPOD implements SelfNormalizingModel
         if (array_key_exists('trackDocumentDetail', $data)) {
             $trackDocumentDetailRaw = $data['trackDocumentDetail'];
             if (!is_array($trackDocumentDetailRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "trackDocumentDetail" must be object, got %s.',
-                        get_debug_type($trackDocumentDetailRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "trackDocumentDetail" must be object, got %s.', get_debug_type($trackDocumentDetailRaw)));
             }
             /** @var non-empty-array<string, mixed> $trackDocumentDetailRawTyped */
             $trackDocumentDetailRawTyped = $trackDocumentDetailRaw;
@@ -97,18 +92,11 @@ final readonly class FullSchemaSPOD implements SelfNormalizingModel
         if (array_key_exists('trackDocumentSpecification', $data)) {
             $trackDocumentSpecificationRaw = $data['trackDocumentSpecification'];
             if (!(is_array($trackDocumentSpecificationRaw) && array_is_list($trackDocumentSpecificationRaw))) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "trackDocumentSpecification" must be list, got %s.',
-                        get_debug_type($trackDocumentSpecificationRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "trackDocumentSpecification" must be list, got %s.', get_debug_type($trackDocumentSpecificationRaw)));
             }
             $trackDocumentSpecification = array_map(static function (mixed $value): TrackDocumentSpecification {
                 if (!is_array($value)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be object, got %s.', get_debug_type($value)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value)));
                 }
                 /** @var non-empty-array<string, mixed> $valueTyped */
                 $valueTyped = $value;
@@ -120,13 +108,11 @@ final readonly class FullSchemaSPOD implements SelfNormalizingModel
             $data,
             ['trackDocumentDetail' => true, 'trackDocumentSpecification' => true],
         );
-        if ($trackDocumentDetail === null) {
+        if (!$trackDocumentDetail instanceof TrackDocumentDetail) {
             throw new MalformedDataException('Required property "trackDocumentDetail" is missing from the document.');
         }
         if ($trackDocumentSpecification === null) {
-            throw new MalformedDataException(
-                'Required property "trackDocumentSpecification" is missing from the document.',
-            );
+            throw new MalformedDataException('Required property "trackDocumentSpecification" is missing from the document.');
         }
 
         return new self($trackDocumentDetail, $trackDocumentSpecification, $additionalProperties);
@@ -146,6 +132,19 @@ final readonly class FullSchemaSPOD implements SelfNormalizingModel
     }
 
     /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
+    }
+
+    /** @return array<int|string, mixed> */
     private function normalize(NormalizationTarget $normalizationTarget): array
     {
         /** @var array<int|string, mixed> $dataArray */
@@ -156,7 +155,7 @@ final readonly class FullSchemaSPOD implements SelfNormalizingModel
             $values[] = $normalizationTarget->model($value);
         }
         $dataArray['trackDocumentSpecification'] = $values;
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

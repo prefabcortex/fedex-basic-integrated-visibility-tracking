@@ -25,6 +25,7 @@ use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\BaseOperationTrait;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\ContentType;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\HeaderParameters;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\JsonBody;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\JsonRequestBody;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\Operation;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\OperationTrait;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\Payload;
@@ -60,14 +61,11 @@ use function in_array;
  *
  * @implements Operation<TrkcResponseVOTCN>
  */
-final class PostTrackV1Tcn implements Operation
+final readonly class PostTrackV1Tcn implements Operation
 {
     use BaseOperationTrait;
     use OperationTrait;
     use ValidatorTrait;
-    /** @var Option<FullSchemaTCN> */
-    private readonly Option $body;
-    private readonly PostTrackV1TcnHeaderParameters $headerParameters;
 
     /**
      * Use this endpoint to return tracking information based on a Tracking Control Number.
@@ -76,10 +74,8 @@ final class PostTrackV1Tcn implements Operation
      *
      * @param Option<FullSchemaTCN> $requestBody
      */
-    public function __construct(Option $requestBody, PostTrackV1TcnHeaderParameters $headerParameters)
+    public function __construct(private Option $requestBody, private PostTrackV1TcnHeaderParameters $headerParameters)
     {
-        $this->body = $requestBody;
-        $this->headerParameters = $headerParameters;
     }
 
     #[Override]
@@ -101,13 +97,13 @@ final class PostTrackV1Tcn implements Operation
     #[Override]
     public function getPayload(StreamFactoryInterface $streamFactory, ValidationMode $validation): Payload
     {
-        if ($this->body->isDefined()) {
-            $body = $this->body->get();
+        if ($this->requestBody->isDefined()) {
+            $body = $this->requestBody->get();
             if (ValidationMode::Strict === $validation) {
-                $this->validate($body->toArray(), FullSchemaTCNConstraint::constraints());
+                $this->validate($body->toRequestArray(), FullSchemaTCNConstraint::constraints());
             }
 
-            return new Payload(['Content-Type' => ['application/json']], JsonBody::encode($body));
+            return new Payload(['Content-Type' => ['application/json']], JsonRequestBody::encode($body));
         }
 
         return new Payload([], '');
@@ -187,22 +183,14 @@ final class PostTrackV1Tcn implements Operation
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO500Constraint::constraints());
             }
-            throw new PostTrackV1TcnInternalServerErrorException(
-                ErrorResponseVO500::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new PostTrackV1TcnInternalServerErrorException(ErrorResponseVO500::fromArray($typedData), $response, $body);
         }
         if (503 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO503Constraint::constraints());
             }
-            throw new PostTrackV1TcnServiceUnavailableException(
-                ErrorResponseVO503::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new PostTrackV1TcnServiceUnavailableException(ErrorResponseVO503::fromArray($typedData), $response, $body);
         }
         if (in_array($status, [200, 400, 401, 403, 404, 500, 503], true)) {
             throw new UnexpectedContentTypeException($response, $body);

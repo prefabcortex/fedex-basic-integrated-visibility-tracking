@@ -79,18 +79,14 @@ final readonly class InformationNoteDetail implements SelfNormalizingModel
         if (array_key_exists('code', $data) && $data['code'] !== null) {
             $codeRaw = $data['code'];
             if (!is_string($codeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "code" must be string, got %s.', get_debug_type($codeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "code" must be string, got %s.', get_debug_type($codeRaw)));
             }
             $code = Some::create($codeRaw);
         }
         if (array_key_exists('description', $data) && $data['description'] !== null) {
             $descriptionRaw = $data['description'];
             if (!is_string($descriptionRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "description" must be string, got %s.', get_debug_type($descriptionRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "description" must be string, got %s.', get_debug_type($descriptionRaw)));
             }
             $description = Some::create($descriptionRaw);
         }
@@ -115,7 +111,7 @@ final readonly class InformationNoteDetail implements SelfNormalizingModel
             $description = $descriptionOption->get();
             $dataArray['description'] = $description;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -124,6 +120,19 @@ final readonly class InformationNoteDetail implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): InformationNoteDetailBuilder

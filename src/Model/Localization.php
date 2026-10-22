@@ -83,18 +83,14 @@ final readonly class Localization implements SelfNormalizingModel
         if (array_key_exists('languageCode', $data)) {
             $languageCodeRaw = $data['languageCode'];
             if (!is_string($languageCodeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "languageCode" must be string, got %s.', get_debug_type($languageCodeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "languageCode" must be string, got %s.', get_debug_type($languageCodeRaw)));
             }
             $languageCode = $languageCodeRaw;
         }
         if (array_key_exists('localeCode', $data) && $data['localeCode'] !== null) {
             $localeCodeRaw = $data['localeCode'];
             if (!is_string($localeCodeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "localeCode" must be string, got %s.', get_debug_type($localeCodeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "localeCode" must be string, got %s.', get_debug_type($localeCodeRaw)));
             }
             $localeCode = Some::create($localeCodeRaw);
         }
@@ -118,7 +114,7 @@ final readonly class Localization implements SelfNormalizingModel
             $localeCode = $localeCodeOption->get();
             $dataArray['localeCode'] = $localeCode;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -127,6 +123,19 @@ final readonly class Localization implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): LocalizationBuilder

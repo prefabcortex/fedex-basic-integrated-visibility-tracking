@@ -11,6 +11,7 @@ namespace Prefabcortex\FedexBasicIntegratedVisibilityTracking\Validator;
 
 use Override;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Model\ScanEventLocationType;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
@@ -22,12 +23,16 @@ use function array_map;
  */
 final class ScanEventLocationTypeConstraint implements ConstraintProviderInterface
 {
+    /** @return list<Constraint> */
     #[Override]
     public static function constraints(): array
     {
         return [
             new Type(['string']),
-            new Choice(null, array_map(static fn ($c) => $c->value, ScanEventLocationType::cases())),
+            new Choice(
+                null,
+                array_map(static fn (ScanEventLocationType $c): string => $c->value, ScanEventLocationType::cases()),
+            ),
             new NotNull(),
         ];
     }

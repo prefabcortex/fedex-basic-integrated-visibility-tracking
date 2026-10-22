@@ -11,6 +11,7 @@ namespace Prefabcortex\FedexBasicIntegratedVisibilityTracking\Validator;
 
 use Override;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Model\ServiceCommitMessageType;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
@@ -22,12 +23,19 @@ use function array_map;
  */
 final class ServiceCommitMessageTypeConstraint implements ConstraintProviderInterface
 {
+    /** @return list<Constraint> */
     #[Override]
     public static function constraints(): array
     {
         return [
             new Type(['string']),
-            new Choice(null, array_map(static fn ($c) => $c->value, ServiceCommitMessageType::cases())),
+            new Choice(
+                null,
+                array_map(
+                    static fn (ServiceCommitMessageType $c): string => $c->value,
+                    ServiceCommitMessageType::cases(),
+                ),
+            ),
             new NotNull(),
         ];
     }

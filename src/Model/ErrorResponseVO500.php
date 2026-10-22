@@ -95,36 +95,25 @@ final readonly class ErrorResponseVO500 implements SelfNormalizingModel
         if (array_key_exists('transactionId', $data) && $data['transactionId'] !== null) {
             $transactionIdRaw = $data['transactionId'];
             if (!is_string($transactionIdRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "transactionId" must be string, got %s.', get_debug_type($transactionIdRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "transactionId" must be string, got %s.', get_debug_type($transactionIdRaw)));
             }
             $transactionId = Some::create($transactionIdRaw);
         }
         if (array_key_exists('customerTransactionId', $data) && $data['customerTransactionId'] !== null) {
             $customerTransactionIdRaw = $data['customerTransactionId'];
             if (!is_string($customerTransactionIdRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "customerTransactionId" must be string, got %s.',
-                        get_debug_type($customerTransactionIdRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "customerTransactionId" must be string, got %s.', get_debug_type($customerTransactionIdRaw)));
             }
             $customerTransactionId = Some::create($customerTransactionIdRaw);
         }
         if (array_key_exists('errors', $data) && $data['errors'] !== null) {
             $errorsRaw = $data['errors'];
             if (!(is_array($errorsRaw) && array_is_list($errorsRaw))) {
-                throw new MalformedDataException(
-                    sprintf('Property "errors" must be list, got %s.', get_debug_type($errorsRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "errors" must be list, got %s.', get_debug_type($errorsRaw)));
             }
             $errors = Some::create(array_map(static function (mixed $value): CXSError500 {
                 if (!is_array($value)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be object, got %s.', get_debug_type($value)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value)));
                 }
                 /** @var array<string, mixed> $valueTyped */
                 $valueTyped = $value;
@@ -154,6 +143,19 @@ final readonly class ErrorResponseVO500 implements SelfNormalizingModel
     }
 
     /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
+    }
+
+    /** @return array<int|string, mixed> */
     private function normalize(NormalizationTarget $normalizationTarget): array
     {
         /** @var array<int|string, mixed> $dataArray */
@@ -177,7 +179,7 @@ final readonly class ErrorResponseVO500 implements SelfNormalizingModel
             }
             $dataArray['errors'] = $values;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

@@ -227,27 +227,21 @@ final readonly class ScanEvent implements SelfNormalizingModel
         if (array_key_exists('date', $data) && $data['date'] !== null) {
             $dateRaw = $data['date'];
             if (!is_string($dateRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "date" must be string, got %s.', get_debug_type($dateRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "date" must be string, got %s.', get_debug_type($dateRaw)));
             }
             $date = Some::create($dateRaw);
         }
         if (array_key_exists('derivedStatus', $data) && $data['derivedStatus'] !== null) {
             $derivedStatusRaw = $data['derivedStatus'];
             if (!is_string($derivedStatusRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "derivedStatus" must be string, got %s.', get_debug_type($derivedStatusRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "derivedStatus" must be string, got %s.', get_debug_type($derivedStatusRaw)));
             }
             $derivedStatus = Some::create($derivedStatusRaw);
         }
         if (array_key_exists('scanLocation', $data) && $data['scanLocation'] !== null) {
             $scanLocationRaw = $data['scanLocation'];
             if (!is_array($scanLocationRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "scanLocation" must be object, got %s.', get_debug_type($scanLocationRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "scanLocation" must be object, got %s.', get_debug_type($scanLocationRaw)));
             }
             /** @var array<string, mixed> $scanLocationRawTyped */
             $scanLocationRawTyped = $scanLocationRaw;
@@ -256,18 +250,14 @@ final readonly class ScanEvent implements SelfNormalizingModel
         if (array_key_exists('locationId', $data) && $data['locationId'] !== null) {
             $locationIdRaw = $data['locationId'];
             if (!is_string($locationIdRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "locationId" must be string, got %s.', get_debug_type($locationIdRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "locationId" must be string, got %s.', get_debug_type($locationIdRaw)));
             }
             $locationId = Some::create($locationIdRaw);
         }
         if (array_key_exists('locationType', $data) && $data['locationType'] !== null) {
             $locationTypeRaw = $data['locationType'];
             if (!is_string($locationTypeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "locationType" must be string, got %s.', get_debug_type($locationTypeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "locationType" must be string, got %s.', get_debug_type($locationTypeRaw)));
             }
             $locationType = Some::create(
                 ScanEventLocationType::tryFrom($locationTypeRaw) ?? UnknownEnumValue::of($locationTypeRaw),
@@ -276,63 +266,42 @@ final readonly class ScanEvent implements SelfNormalizingModel
         if (array_key_exists('exceptionDescription', $data) && $data['exceptionDescription'] !== null) {
             $exceptionDescriptionRaw = $data['exceptionDescription'];
             if (!is_string($exceptionDescriptionRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "exceptionDescription" must be string, got %s.',
-                        get_debug_type($exceptionDescriptionRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "exceptionDescription" must be string, got %s.', get_debug_type($exceptionDescriptionRaw)));
             }
             $exceptionDescription = Some::create($exceptionDescriptionRaw);
         }
         if (array_key_exists('eventDescription', $data) && $data['eventDescription'] !== null) {
             $eventDescriptionRaw = $data['eventDescription'];
             if (!is_string($eventDescriptionRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "eventDescription" must be string, got %s.',
-                        get_debug_type($eventDescriptionRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "eventDescription" must be string, got %s.', get_debug_type($eventDescriptionRaw)));
             }
             $eventDescription = Some::create($eventDescriptionRaw);
         }
         if (array_key_exists('eventType', $data) && $data['eventType'] !== null) {
             $eventTypeRaw = $data['eventType'];
             if (!is_string($eventTypeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "eventType" must be string, got %s.', get_debug_type($eventTypeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "eventType" must be string, got %s.', get_debug_type($eventTypeRaw)));
             }
             $eventType = Some::create($eventTypeRaw);
         }
         if (array_key_exists('derivedStatusCode', $data) && $data['derivedStatusCode'] !== null) {
             $derivedStatusCodeRaw = $data['derivedStatusCode'];
             if (!is_string($derivedStatusCodeRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "derivedStatusCode" must be string, got %s.',
-                        get_debug_type($derivedStatusCodeRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "derivedStatusCode" must be string, got %s.', get_debug_type($derivedStatusCodeRaw)));
             }
             $derivedStatusCode = Some::create($derivedStatusCodeRaw);
         }
         if (array_key_exists('exceptionCode', $data) && $data['exceptionCode'] !== null) {
             $exceptionCodeRaw = $data['exceptionCode'];
             if (!is_string($exceptionCodeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "exceptionCode" must be string, got %s.', get_debug_type($exceptionCodeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "exceptionCode" must be string, got %s.', get_debug_type($exceptionCodeRaw)));
             }
             $exceptionCode = Some::create($exceptionCodeRaw);
         }
         if (array_key_exists('delayDetail', $data) && $data['delayDetail'] !== null) {
             $delayDetailRaw = $data['delayDetail'];
             if (!is_array($delayDetailRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "delayDetail" must be object, got %s.', get_debug_type($delayDetailRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "delayDetail" must be object, got %s.', get_debug_type($delayDetailRaw)));
             }
             /** @var array<string, mixed> $delayDetailRawTyped */
             $delayDetailRawTyped = $delayDetailRaw;
@@ -382,6 +351,19 @@ final readonly class ScanEvent implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->normalize(NormalizationTarget::Json);
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
     }
 
     /** @return array<int|string, mixed> */
@@ -444,7 +426,7 @@ final readonly class ScanEvent implements SelfNormalizingModel
             $delayDetail = $delayDetailOption->get();
             $dataArray['delayDetail'] = $normalizationTarget->model($delayDetail);
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

@@ -76,18 +76,14 @@ final readonly class EmailDetail implements SelfNormalizingModel
         if (array_key_exists('emailAddress', $data)) {
             $emailAddressRaw = $data['emailAddress'];
             if (!is_string($emailAddressRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "emailAddress" must be string, got %s.', get_debug_type($emailAddressRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "emailAddress" must be string, got %s.', get_debug_type($emailAddressRaw)));
             }
             $emailAddress = $emailAddressRaw;
         }
         if (array_key_exists('name', $data) && $data['name'] !== null) {
             $nameRaw = $data['name'];
             if (!is_string($nameRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "name" must be string, got %s.', get_debug_type($nameRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "name" must be string, got %s.', get_debug_type($nameRaw)));
             }
             $name = Some::create($nameRaw);
         }
@@ -111,7 +107,7 @@ final readonly class EmailDetail implements SelfNormalizingModel
             $name = $nameOption->get();
             $dataArray['name'] = $name;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -120,6 +116,19 @@ final readonly class EmailDetail implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): EmailDetailBuilder

@@ -25,6 +25,7 @@ use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\BaseOperationTrait;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\ContentType;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\HeaderParameters;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\JsonBody;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\JsonRequestBody;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\Operation;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\OperationTrait;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\Payload;
@@ -60,14 +61,11 @@ use function in_array;
  *
  * @implements Operation<TrkcResponseVOTrackingNumber>
  */
-final class TrackByTrackingNumber implements Operation
+final readonly class TrackByTrackingNumber implements Operation
 {
     use BaseOperationTrait;
     use OperationTrait;
     use ValidatorTrait;
-    /** @var Option<FullSchemaTrackingNumbers> */
-    private readonly Option $body;
-    private readonly TrackByTrackingNumberHeaderParameters $headerParameters;
 
     /**
      * This endpoint provides customers package tracking information based on a tracking number for
@@ -77,10 +75,10 @@ final class TrackByTrackingNumber implements Operation
      *
      * @param Option<FullSchemaTrackingNumbers> $requestBody
      */
-    public function __construct(Option $requestBody, TrackByTrackingNumberHeaderParameters $headerParameters)
-    {
-        $this->body = $requestBody;
-        $this->headerParameters = $headerParameters;
+    public function __construct(
+        private Option $requestBody,
+        private TrackByTrackingNumberHeaderParameters $headerParameters,
+    ) {
     }
 
     #[Override]
@@ -102,13 +100,13 @@ final class TrackByTrackingNumber implements Operation
     #[Override]
     public function getPayload(StreamFactoryInterface $streamFactory, ValidationMode $validation): Payload
     {
-        if ($this->body->isDefined()) {
-            $body = $this->body->get();
+        if ($this->requestBody->isDefined()) {
+            $body = $this->requestBody->get();
             if (ValidationMode::Strict === $validation) {
-                $this->validate($body->toArray(), FullSchemaTrackingNumbersConstraint::constraints());
+                $this->validate($body->toRequestArray(), FullSchemaTrackingNumbersConstraint::constraints());
             }
 
-            return new Payload(['Content-Type' => ['application/json']], JsonBody::encode($body));
+            return new Payload(['Content-Type' => ['application/json']], JsonRequestBody::encode($body));
         }
 
         return new Payload([], '');
@@ -160,66 +158,42 @@ final class TrackByTrackingNumber implements Operation
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVOConstraint::constraints());
             }
-            throw new TrackByTrackingNumberBadRequestException(
-                ErrorResponseVO::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new TrackByTrackingNumberBadRequestException(ErrorResponseVO::fromArray($typedData), $response, $body);
         }
         if (401 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO401Constraint::constraints());
             }
-            throw new TrackByTrackingNumberUnauthorizedException(
-                ErrorResponseVO401::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new TrackByTrackingNumberUnauthorizedException(ErrorResponseVO401::fromArray($typedData), $response, $body);
         }
         if (403 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO403Constraint::constraints());
             }
-            throw new TrackByTrackingNumberForbiddenException(
-                ErrorResponseVO403::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new TrackByTrackingNumberForbiddenException(ErrorResponseVO403::fromArray($typedData), $response, $body);
         }
         if (404 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO404Constraint::constraints());
             }
-            throw new TrackByTrackingNumberNotFoundException(
-                ErrorResponseVO404::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new TrackByTrackingNumberNotFoundException(ErrorResponseVO404::fromArray($typedData), $response, $body);
         }
         if (500 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO500Constraint::constraints());
             }
-            throw new TrackByTrackingNumberInternalServerErrorException(
-                ErrorResponseVO500::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new TrackByTrackingNumberInternalServerErrorException(ErrorResponseVO500::fromArray($typedData), $response, $body);
         }
         if (503 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO503Constraint::constraints());
             }
-            throw new TrackByTrackingNumberServiceUnavailableException(
-                ErrorResponseVO503::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new TrackByTrackingNumberServiceUnavailableException(ErrorResponseVO503::fromArray($typedData), $response, $body);
         }
         if (in_array($status, [200, 400, 401, 403, 404, 500, 503], true)) {
             throw new UnexpectedContentTypeException($response, $body);

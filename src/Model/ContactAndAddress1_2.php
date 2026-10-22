@@ -70,9 +70,7 @@ final readonly class ContactAndAddress1_2 implements SelfNormalizingModel
         if (array_key_exists('address', $data) && $data['address'] !== null) {
             $addressRaw = $data['address'];
             if (!is_array($addressRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "address" must be object, got %s.', get_debug_type($addressRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "address" must be object, got %s.', get_debug_type($addressRaw)));
             }
             /** @var array<string, mixed> $addressRawTyped */
             $addressRawTyped = $addressRaw;
@@ -97,6 +95,19 @@ final readonly class ContactAndAddress1_2 implements SelfNormalizingModel
     }
 
     /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
+    }
+
+    /** @return array<int|string, mixed> */
     private function normalize(NormalizationTarget $normalizationTarget): array
     {
         /** @var array<int|string, mixed> $dataArray */
@@ -106,7 +117,7 @@ final readonly class ContactAndAddress1_2 implements SelfNormalizingModel
             $address = $addressOption->get();
             $dataArray['address'] = $normalizationTarget->model($address);
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

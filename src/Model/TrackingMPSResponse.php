@@ -82,18 +82,11 @@ final readonly class TrackingMPSResponse implements SelfNormalizingModel
         if (array_key_exists('completeTrackResults', $data) && $data['completeTrackResults'] !== null) {
             $completeTrackResultsRaw = $data['completeTrackResults'];
             if (!(is_array($completeTrackResultsRaw) && array_is_list($completeTrackResultsRaw))) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "completeTrackResults" must be list, got %s.',
-                        get_debug_type($completeTrackResultsRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "completeTrackResults" must be list, got %s.', get_debug_type($completeTrackResultsRaw)));
             }
             $completeTrackResults = Some::create(array_map(static function (mixed $value): CompleteTrackResult {
                 if (!is_array($value)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be object, got %s.', get_debug_type($value)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value)));
                 }
                 /** @var array<string, mixed> $valueTyped */
                 $valueTyped = $value;
@@ -104,15 +97,11 @@ final readonly class TrackingMPSResponse implements SelfNormalizingModel
         if (array_key_exists('alerts', $data) && $data['alerts'] !== null) {
             $alertsRaw = $data['alerts'];
             if (!(is_array($alertsRaw) && array_is_list($alertsRaw))) {
-                throw new MalformedDataException(
-                    sprintf('Property "alerts" must be list, got %s.', get_debug_type($alertsRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "alerts" must be list, got %s.', get_debug_type($alertsRaw)));
             }
             $alerts = Some::create(array_map(static function (mixed $value_1): Alert {
                 if (!is_array($value_1)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be object, got %s.', get_debug_type($value_1)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value_1)));
                 }
                 /** @var array<string, mixed> $value_1Typed */
                 $value_1Typed = $value_1;
@@ -139,6 +128,19 @@ final readonly class TrackingMPSResponse implements SelfNormalizingModel
     }
 
     /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
+    }
+
+    /** @return array<int|string, mixed> */
     private function normalize(NormalizationTarget $normalizationTarget): array
     {
         /** @var array<int|string, mixed> $dataArray */
@@ -161,7 +163,7 @@ final readonly class TrackingMPSResponse implements SelfNormalizingModel
             }
             $dataArray['alerts'] = $values_1;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

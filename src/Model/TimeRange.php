@@ -79,18 +79,14 @@ final readonly class TimeRange implements SelfNormalizingModel
         if (array_key_exists('begins', $data) && $data['begins'] !== null) {
             $beginsRaw = $data['begins'];
             if (!is_string($beginsRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "begins" must be string, got %s.', get_debug_type($beginsRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "begins" must be string, got %s.', get_debug_type($beginsRaw)));
             }
             $begins = Some::create($beginsRaw);
         }
         if (array_key_exists('ends', $data) && $data['ends'] !== null) {
             $endsRaw = $data['ends'];
             if (!is_string($endsRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "ends" must be string, got %s.', get_debug_type($endsRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "ends" must be string, got %s.', get_debug_type($endsRaw)));
             }
             $ends = Some::create($endsRaw);
         }
@@ -115,7 +111,7 @@ final readonly class TimeRange implements SelfNormalizingModel
             $ends = $endsOption->get();
             $dataArray['ends'] = $ends;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -124,6 +120,19 @@ final readonly class TimeRange implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): TimeRangeBuilder

@@ -11,6 +11,7 @@ namespace Prefabcortex\FedexBasicIntegratedVisibilityTracking\Validator;
 
 use Override;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Model\FullSchemaMultiplePieceShipmentAssociatedType;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
@@ -22,6 +23,7 @@ use function array_map;
  */
 final class FullSchemaMultiplePieceShipmentAssociatedTypeConstraint implements ConstraintProviderInterface
 {
+    /** @return list<Constraint> */
     #[Override]
     public static function constraints(): array
     {
@@ -29,7 +31,10 @@ final class FullSchemaMultiplePieceShipmentAssociatedTypeConstraint implements C
             new Type(['string']),
             new Choice(
                 null,
-                array_map(static fn ($c) => $c->value, FullSchemaMultiplePieceShipmentAssociatedType::cases()),
+                array_map(
+                    static fn (FullSchemaMultiplePieceShipmentAssociatedType $c): string => $c->value,
+                    FullSchemaMultiplePieceShipmentAssociatedType::cases(),
+                ),
             ),
             new NotNull(),
         ];

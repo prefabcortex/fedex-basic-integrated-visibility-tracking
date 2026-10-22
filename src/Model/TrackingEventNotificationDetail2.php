@@ -100,18 +100,11 @@ final readonly class TrackingEventNotificationDetail2 implements SelfNormalizing
         if (array_key_exists('trackingNotifications', $data)) {
             $trackingNotificationsRaw = $data['trackingNotifications'];
             if (!(is_array($trackingNotificationsRaw) && array_is_list($trackingNotificationsRaw))) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "trackingNotifications" must be list, got %s.',
-                        get_debug_type($trackingNotificationsRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "trackingNotifications" must be list, got %s.', get_debug_type($trackingNotificationsRaw)));
             }
             $trackingNotifications = array_map(static function (mixed $value): TrackingNotification {
                 if (!is_array($value)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be object, got %s.', get_debug_type($value)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value)));
                 }
                 /** @var non-empty-array<string, mixed> $valueTyped */
                 $valueTyped = $value;
@@ -122,21 +115,14 @@ final readonly class TrackingEventNotificationDetail2 implements SelfNormalizing
         if (array_key_exists('personalMessage', $data) && $data['personalMessage'] !== null) {
             $personalMessageRaw = $data['personalMessage'];
             if (!is_string($personalMessageRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "personalMessage" must be string, got %s.', get_debug_type($personalMessageRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "personalMessage" must be string, got %s.', get_debug_type($personalMessageRaw)));
             }
             $personalMessage = Some::create($personalMessageRaw);
         }
         if (array_key_exists('supportHTML', $data) && $data['supportHTML'] !== null) {
             $supportHTMLRaw = $data['supportHTML'];
             if (!(is_string($supportHTMLRaw) || is_int($supportHTMLRaw) || is_float($supportHTMLRaw) || is_bool($supportHTMLRaw) || is_array($supportHTMLRaw))) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "supportHTML" must be string, int, float, bool or array, got %s.',
-                        get_debug_type($supportHTMLRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "supportHTML" must be string, int, float, bool or array, got %s.', get_debug_type($supportHTMLRaw)));
             }
             $supportHTML = Some::create($supportHTMLRaw);
         }
@@ -165,6 +151,19 @@ final readonly class TrackingEventNotificationDetail2 implements SelfNormalizing
     }
 
     /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
+    }
+
+    /** @return array<int|string, mixed> */
     private function normalize(NormalizationTarget $normalizationTarget): array
     {
         /** @var array<int|string, mixed> $dataArray */
@@ -184,7 +183,7 @@ final readonly class TrackingEventNotificationDetail2 implements SelfNormalizing
             $supportHTML = $supportHTMLOption->get();
             $dataArray['supportHTML'] = $supportHTML;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

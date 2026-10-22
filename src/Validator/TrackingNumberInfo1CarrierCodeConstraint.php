@@ -11,6 +11,7 @@ namespace Prefabcortex\FedexBasicIntegratedVisibilityTracking\Validator;
 
 use Override;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Model\TrackingNumberInfo1CarrierCode;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
@@ -22,12 +23,19 @@ use function array_map;
  */
 final class TrackingNumberInfo1CarrierCodeConstraint implements ConstraintProviderInterface
 {
+    /** @return list<Constraint> */
     #[Override]
     public static function constraints(): array
     {
         return [
             new Type(['string']),
-            new Choice(null, array_map(static fn ($c) => $c->value, TrackingNumberInfo1CarrierCode::cases())),
+            new Choice(
+                null,
+                array_map(
+                    static fn (TrackingNumberInfo1CarrierCode $c): string => $c->value,
+                    TrackingNumberInfo1CarrierCode::cases(),
+                ),
+            ),
             new NotNull(),
         ];
     }

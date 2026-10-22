@@ -74,9 +74,7 @@ final readonly class ContactAndAddress implements SelfNormalizingModel
         if (array_key_exists('contact', $data)) {
             $contactRaw = $data['contact'];
             if (!is_array($contactRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "contact" must be object, got %s.', get_debug_type($contactRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "contact" must be object, got %s.', get_debug_type($contactRaw)));
             }
             /** @var array<string, mixed> $contactRawTyped */
             $contactRawTyped = $contactRaw;
@@ -85,19 +83,17 @@ final readonly class ContactAndAddress implements SelfNormalizingModel
         if (array_key_exists('address', $data)) {
             $addressRaw = $data['address'];
             if (!is_array($addressRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "address" must be object, got %s.', get_debug_type($addressRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "address" must be object, got %s.', get_debug_type($addressRaw)));
             }
             /** @var non-empty-array<string, mixed> $addressRawTyped */
             $addressRawTyped = $addressRaw;
             $address = AddressVO::fromArray($addressRawTyped);
         }
         $additionalProperties = array_diff_key($data, ['contact' => true, 'address' => true]);
-        if ($contact === null) {
+        if (!$contact instanceof ContactVO) {
             throw new MalformedDataException('Required property "contact" is missing from the document.');
         }
-        if ($address === null) {
+        if (!$address instanceof AddressVO) {
             throw new MalformedDataException('Required property "address" is missing from the document.');
         }
 
@@ -118,13 +114,26 @@ final readonly class ContactAndAddress implements SelfNormalizingModel
     }
 
     /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
+    }
+
+    /** @return array<int|string, mixed> */
     private function normalize(NormalizationTarget $normalizationTarget): array
     {
         /** @var array<int|string, mixed> $dataArray */
         $dataArray = [];
         $dataArray['contact'] = $normalizationTarget->model($this->contact);
         $dataArray['address'] = $normalizationTarget->model($this->address);
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

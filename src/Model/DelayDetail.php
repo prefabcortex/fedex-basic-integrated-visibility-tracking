@@ -92,27 +92,21 @@ final readonly class DelayDetail implements SelfNormalizingModel
         if (array_key_exists('type', $data) && $data['type'] !== null) {
             $typeRaw = $data['type'];
             if (!is_string($typeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)));
             }
             $type = Some::create(DelayDetailType::tryFrom($typeRaw) ?? UnknownEnumValue::of($typeRaw));
         }
         if (array_key_exists('subType', $data) && $data['subType'] !== null) {
             $subTypeRaw = $data['subType'];
             if (!is_string($subTypeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "subType" must be string, got %s.', get_debug_type($subTypeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "subType" must be string, got %s.', get_debug_type($subTypeRaw)));
             }
             $subType = Some::create(DelayDetailSubType::tryFrom($subTypeRaw) ?? UnknownEnumValue::of($subTypeRaw));
         }
         if (array_key_exists('status', $data) && $data['status'] !== null) {
             $statusRaw = $data['status'];
             if (!is_string($statusRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "status" must be string, got %s.', get_debug_type($statusRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "status" must be string, got %s.', get_debug_type($statusRaw)));
             }
             $status = Some::create(DelayDetailStatus::tryFrom($statusRaw) ?? UnknownEnumValue::of($statusRaw));
         }
@@ -142,7 +136,7 @@ final readonly class DelayDetail implements SelfNormalizingModel
             $status = $statusOption->get();
             $dataArray['status'] = $status->value;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -151,6 +145,19 @@ final readonly class DelayDetail implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): DelayDetailBuilder

@@ -11,6 +11,7 @@ namespace Prefabcortex\FedexBasicIntegratedVisibilityTracking\Validator;
 
 use Override;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Model\ContactAndAddress1;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Required;
@@ -20,6 +21,7 @@ use Symfony\Component\Validator\Constraints\Required;
  */
 final class ContactAndAddress1Constraint implements ConstraintProviderInterface
 {
+    /** @return list<Constraint> */
     #[Override]
     public static function constraints(): array
     {

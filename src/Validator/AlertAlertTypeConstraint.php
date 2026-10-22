@@ -11,6 +11,7 @@ namespace Prefabcortex\FedexBasicIntegratedVisibilityTracking\Validator;
 
 use Override;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Model\AlertAlertType;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
@@ -22,12 +23,13 @@ use function array_map;
  */
 final class AlertAlertTypeConstraint implements ConstraintProviderInterface
 {
+    /** @return list<Constraint> */
     #[Override]
     public static function constraints(): array
     {
         return [
             new Type(['string']),
-            new Choice(null, array_map(static fn ($c) => $c->value, AlertAlertType::cases())),
+            new Choice(null, array_map(static fn (AlertAlertType $c): string => $c->value, AlertAlertType::cases())),
             new NotNull(),
         ];
     }

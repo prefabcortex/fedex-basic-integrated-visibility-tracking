@@ -99,30 +99,21 @@ final readonly class ServiceDescriptionDetail implements SelfNormalizingModel
         if (array_key_exists('description', $data) && $data['description'] !== null) {
             $descriptionRaw = $data['description'];
             if (!is_string($descriptionRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "description" must be string, got %s.', get_debug_type($descriptionRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "description" must be string, got %s.', get_debug_type($descriptionRaw)));
             }
             $description = Some::create($descriptionRaw);
         }
         if (array_key_exists('shortDescription', $data) && $data['shortDescription'] !== null) {
             $shortDescriptionRaw = $data['shortDescription'];
             if (!is_string($shortDescriptionRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "shortDescription" must be string, got %s.',
-                        get_debug_type($shortDescriptionRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "shortDescription" must be string, got %s.', get_debug_type($shortDescriptionRaw)));
             }
             $shortDescription = Some::create($shortDescriptionRaw);
         }
         if (array_key_exists('type', $data) && $data['type'] !== null) {
             $typeRaw = $data['type'];
             if (!is_string($typeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)));
             }
             $type = Some::create($typeRaw);
         }
@@ -155,7 +146,7 @@ final readonly class ServiceDescriptionDetail implements SelfNormalizingModel
             $type = $typeOption->get();
             $dataArray['type'] = $type;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -164,6 +155,19 @@ final readonly class ServiceDescriptionDetail implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): ServiceDescriptionDetailBuilder

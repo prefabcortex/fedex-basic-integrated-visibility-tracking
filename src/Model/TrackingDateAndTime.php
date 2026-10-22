@@ -81,18 +81,14 @@ final readonly class TrackingDateAndTime implements SelfNormalizingModel
         if (array_key_exists('dateTime', $data) && $data['dateTime'] !== null) {
             $dateTimeRaw = $data['dateTime'];
             if (!is_string($dateTimeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "dateTime" must be string, got %s.', get_debug_type($dateTimeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "dateTime" must be string, got %s.', get_debug_type($dateTimeRaw)));
             }
             $dateTime = Some::create($dateTimeRaw);
         }
         if (array_key_exists('type', $data) && $data['type'] !== null) {
             $typeRaw = $data['type'];
             if (!is_string($typeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)));
             }
             $type = Some::create(TrackingDateAndTimeType::tryFrom($typeRaw) ?? UnknownEnumValue::of($typeRaw));
         }
@@ -117,7 +113,7 @@ final readonly class TrackingDateAndTime implements SelfNormalizingModel
             $type = $typeOption->get();
             $dataArray['type'] = $type->value;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -126,6 +122,19 @@ final readonly class TrackingDateAndTime implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): TrackingDateAndTimeBuilder

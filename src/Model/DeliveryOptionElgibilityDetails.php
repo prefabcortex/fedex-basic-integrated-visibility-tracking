@@ -85,9 +85,7 @@ final readonly class DeliveryOptionElgibilityDetails implements SelfNormalizingM
         if (array_key_exists('option', $data) && $data['option'] !== null) {
             $optionRaw = $data['option'];
             if (!is_string($optionRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "option" must be string, got %s.', get_debug_type($optionRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "option" must be string, got %s.', get_debug_type($optionRaw)));
             }
             $option = Some::create(
                 DeliveryOptionElgibilityDetailsOption::tryFrom($optionRaw) ?? UnknownEnumValue::of($optionRaw),
@@ -96,9 +94,7 @@ final readonly class DeliveryOptionElgibilityDetails implements SelfNormalizingM
         if (array_key_exists('eligibility', $data) && $data['eligibility'] !== null) {
             $eligibilityRaw = $data['eligibility'];
             if (!is_string($eligibilityRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "eligibility" must be string, got %s.', get_debug_type($eligibilityRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "eligibility" must be string, got %s.', get_debug_type($eligibilityRaw)));
             }
             $eligibility = Some::create($eligibilityRaw);
         }
@@ -123,7 +119,7 @@ final readonly class DeliveryOptionElgibilityDetails implements SelfNormalizingM
             $eligibility = $eligibilityOption->get();
             $dataArray['eligibility'] = $eligibility;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -132,6 +128,19 @@ final readonly class DeliveryOptionElgibilityDetails implements SelfNormalizingM
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): DeliveryOptionElgibilityDetailsBuilder

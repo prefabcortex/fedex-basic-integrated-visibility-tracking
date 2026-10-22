@@ -58,7 +58,18 @@ use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Parameter\TrackByTrackin
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Parameter\TrackingDocumentsHeaderParameters;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Parameter\TrackMultiplePieceShipmentHeaderParameters;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\CannedResponse;
-use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\ModelFixtures;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\Model\ErrorResponseVO401Fixture;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\Model\ErrorResponseVO403Fixture;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\Model\ErrorResponseVO404Fixture;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\Model\ErrorResponseVO500Fixture;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\Model\ErrorResponseVO503Fixture;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\Model\ErrorResponseVOFixture;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\Model\TrkcResponseVOAssociatedFixture;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\Model\TrkcResponseVONotificationsFixture;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\Model\TrkcResponseVOReferenceNumberFixture;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\Model\TrkcResponseVOSPODFixture;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\Model\TrkcResponseVOTCNFixture;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\Model\TrkcResponseVOTrackingNumberFixture;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\RecordingHttpClient;
 use RuntimeException;
 
@@ -86,7 +97,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackMultiplePieceShipmentReads200(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildTrkcResponseVOAssociated());
+        $body = JsonBody::encode(TrkcResponseVOAssociatedFixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(200, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -109,7 +120,7 @@ final class OperationResponseTest extends TestCase
                 ),
             );
         }
-        self::assertEquals(ModelFixtures::buildTrkcResponseVOAssociated(), $result);
+        self::assertEquals(TrkcResponseVOAssociatedFixture::build(), $result);
     }
 
     /**
@@ -119,7 +130,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackMultiplePieceShipmentReads400(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO());
+        $body = JsonBody::encode(ErrorResponseVOFixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(400, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -140,7 +151,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackMultiplePieceShipmentBadRequestException $exception) {
             self::assertSame(400, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO(), $exception->getErrorResponseVO());
+            self::assertEquals(ErrorResponseVOFixture::build(), $exception->getErrorResponseVO());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -163,7 +174,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackMultiplePieceShipmentReads401(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO401());
+        $body = JsonBody::encode(ErrorResponseVO401Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(401, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -184,7 +195,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackMultiplePieceShipmentUnauthorizedException $exception) {
             self::assertSame(401, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO401(), $exception->getErrorResponseVO401());
+            self::assertEquals(ErrorResponseVO401Fixture::build(), $exception->getErrorResponseVO401());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -207,7 +218,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackMultiplePieceShipmentReads403(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO403());
+        $body = JsonBody::encode(ErrorResponseVO403Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(403, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -228,7 +239,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackMultiplePieceShipmentForbiddenException $exception) {
             self::assertSame(403, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO403(), $exception->getErrorResponseVO403());
+            self::assertEquals(ErrorResponseVO403Fixture::build(), $exception->getErrorResponseVO403());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -251,7 +262,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackMultiplePieceShipmentReads404(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO404());
+        $body = JsonBody::encode(ErrorResponseVO404Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(404, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -272,7 +283,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackMultiplePieceShipmentNotFoundException $exception) {
             self::assertSame(404, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO404(), $exception->getErrorResponseVO404());
+            self::assertEquals(ErrorResponseVO404Fixture::build(), $exception->getErrorResponseVO404());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -295,7 +306,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackMultiplePieceShipmentReads500(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO500());
+        $body = JsonBody::encode(ErrorResponseVO500Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(500, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -316,7 +327,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackMultiplePieceShipmentInternalServerErrorException $exception) {
             self::assertSame(500, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO500(), $exception->getErrorResponseVO500());
+            self::assertEquals(ErrorResponseVO500Fixture::build(), $exception->getErrorResponseVO500());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -339,7 +350,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackMultiplePieceShipmentReads503(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO503());
+        $body = JsonBody::encode(ErrorResponseVO503Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(503, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -360,7 +371,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackMultiplePieceShipmentServiceUnavailableException $exception) {
             self::assertSame(503, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO503(), $exception->getErrorResponseVO503());
+            self::assertEquals(ErrorResponseVO503Fixture::build(), $exception->getErrorResponseVO503());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -481,7 +492,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testPostTrackV1NotificationReads200(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildTrkcResponseVONotifications());
+        $body = JsonBody::encode(TrkcResponseVONotificationsFixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(200, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -504,7 +515,7 @@ final class OperationResponseTest extends TestCase
                 ),
             );
         }
-        self::assertEquals(ModelFixtures::buildTrkcResponseVONotifications(), $result);
+        self::assertEquals(TrkcResponseVONotificationsFixture::build(), $result);
     }
 
     /**
@@ -514,7 +525,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testPostTrackV1NotificationReads400(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO());
+        $body = JsonBody::encode(ErrorResponseVOFixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(400, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -532,7 +543,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (PostTrackV1NotificationBadRequestException $exception) {
             self::assertSame(400, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO(), $exception->getErrorResponseVO());
+            self::assertEquals(ErrorResponseVOFixture::build(), $exception->getErrorResponseVO());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -555,7 +566,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testPostTrackV1NotificationReads401(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO401());
+        $body = JsonBody::encode(ErrorResponseVO401Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(401, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -573,7 +584,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (PostTrackV1NotificationUnauthorizedException $exception) {
             self::assertSame(401, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO401(), $exception->getErrorResponseVO401());
+            self::assertEquals(ErrorResponseVO401Fixture::build(), $exception->getErrorResponseVO401());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -596,7 +607,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testPostTrackV1NotificationReads403(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO403());
+        $body = JsonBody::encode(ErrorResponseVO403Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(403, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -614,7 +625,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (PostTrackV1NotificationForbiddenException $exception) {
             self::assertSame(403, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO403(), $exception->getErrorResponseVO403());
+            self::assertEquals(ErrorResponseVO403Fixture::build(), $exception->getErrorResponseVO403());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -637,7 +648,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testPostTrackV1NotificationReads404(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO404());
+        $body = JsonBody::encode(ErrorResponseVO404Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(404, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -655,7 +666,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (PostTrackV1NotificationNotFoundException $exception) {
             self::assertSame(404, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO404(), $exception->getErrorResponseVO404());
+            self::assertEquals(ErrorResponseVO404Fixture::build(), $exception->getErrorResponseVO404());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -678,7 +689,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testPostTrackV1NotificationReads500(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO500());
+        $body = JsonBody::encode(ErrorResponseVO500Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(500, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -696,7 +707,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (PostTrackV1NotificationInternalServerErrorException $exception) {
             self::assertSame(500, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO500(), $exception->getErrorResponseVO500());
+            self::assertEquals(ErrorResponseVO500Fixture::build(), $exception->getErrorResponseVO500());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -719,7 +730,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testPostTrackV1NotificationReads503(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO503());
+        $body = JsonBody::encode(ErrorResponseVO503Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(503, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -737,7 +748,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (PostTrackV1NotificationServiceUnavailableException $exception) {
             self::assertSame(503, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO503(), $exception->getErrorResponseVO503());
+            self::assertEquals(ErrorResponseVO503Fixture::build(), $exception->getErrorResponseVO503());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -852,7 +863,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackByReferencesReads200(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildTrkcResponseVOReferenceNumber());
+        $body = JsonBody::encode(TrkcResponseVOReferenceNumberFixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(200, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -866,7 +877,7 @@ final class OperationResponseTest extends TestCase
                 sprintf('%s answered %d with %s: %s', 'trackByReferences', 200, $error::class, $error->getMessage()),
             );
         }
-        self::assertEquals(ModelFixtures::buildTrkcResponseVOReferenceNumber(), $result);
+        self::assertEquals(TrkcResponseVOReferenceNumberFixture::build(), $result);
     }
 
     /**
@@ -876,7 +887,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackByReferencesReads400(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO());
+        $body = JsonBody::encode(ErrorResponseVOFixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(400, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -894,7 +905,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackByReferencesBadRequestException $exception) {
             self::assertSame(400, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO(), $exception->getErrorResponseVO());
+            self::assertEquals(ErrorResponseVOFixture::build(), $exception->getErrorResponseVO());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -911,7 +922,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackByReferencesReads401(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO401());
+        $body = JsonBody::encode(ErrorResponseVO401Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(401, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -929,7 +940,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackByReferencesUnauthorizedException $exception) {
             self::assertSame(401, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO401(), $exception->getErrorResponseVO401());
+            self::assertEquals(ErrorResponseVO401Fixture::build(), $exception->getErrorResponseVO401());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -946,7 +957,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackByReferencesReads403(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO403());
+        $body = JsonBody::encode(ErrorResponseVO403Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(403, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -964,7 +975,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackByReferencesForbiddenException $exception) {
             self::assertSame(403, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO403(), $exception->getErrorResponseVO403());
+            self::assertEquals(ErrorResponseVO403Fixture::build(), $exception->getErrorResponseVO403());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -981,7 +992,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackByReferencesReads404(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO404());
+        $body = JsonBody::encode(ErrorResponseVO404Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(404, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -999,7 +1010,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackByReferencesNotFoundException $exception) {
             self::assertSame(404, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO404(), $exception->getErrorResponseVO404());
+            self::assertEquals(ErrorResponseVO404Fixture::build(), $exception->getErrorResponseVO404());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1016,7 +1027,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackByReferencesReads500(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO500());
+        $body = JsonBody::encode(ErrorResponseVO500Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(500, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1034,7 +1045,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackByReferencesInternalServerErrorException $exception) {
             self::assertSame(500, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO500(), $exception->getErrorResponseVO500());
+            self::assertEquals(ErrorResponseVO500Fixture::build(), $exception->getErrorResponseVO500());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1051,7 +1062,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackByReferencesReads503(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO503());
+        $body = JsonBody::encode(ErrorResponseVO503Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(503, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1069,7 +1080,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackByReferencesServiceUnavailableException $exception) {
             self::assertSame(503, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO503(), $exception->getErrorResponseVO503());
+            self::assertEquals(ErrorResponseVO503Fixture::build(), $exception->getErrorResponseVO503());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1166,7 +1177,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testPostTrackV1TcnReads200(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildTrkcResponseVOTCN());
+        $body = JsonBody::encode(TrkcResponseVOTCNFixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(200, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1180,7 +1191,7 @@ final class OperationResponseTest extends TestCase
                 sprintf('%s answered %d with %s: %s', 'postTrackV1Tcn', 200, $error::class, $error->getMessage()),
             );
         }
-        self::assertEquals(ModelFixtures::buildTrkcResponseVOTCN(), $result);
+        self::assertEquals(TrkcResponseVOTCNFixture::build(), $result);
     }
 
     /**
@@ -1190,7 +1201,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testPostTrackV1TcnReads400(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO());
+        $body = JsonBody::encode(ErrorResponseVOFixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(400, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1208,7 +1219,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (PostTrackV1TcnBadRequestException $exception) {
             self::assertSame(400, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO(), $exception->getErrorResponseVO());
+            self::assertEquals(ErrorResponseVOFixture::build(), $exception->getErrorResponseVO());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1225,7 +1236,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testPostTrackV1TcnReads401(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO401());
+        $body = JsonBody::encode(ErrorResponseVO401Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(401, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1243,7 +1254,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (PostTrackV1TcnUnauthorizedException $exception) {
             self::assertSame(401, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO401(), $exception->getErrorResponseVO401());
+            self::assertEquals(ErrorResponseVO401Fixture::build(), $exception->getErrorResponseVO401());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1260,7 +1271,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testPostTrackV1TcnReads403(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO403());
+        $body = JsonBody::encode(ErrorResponseVO403Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(403, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1274,7 +1285,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (PostTrackV1TcnForbiddenException $exception) {
             self::assertSame(403, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO403(), $exception->getErrorResponseVO403());
+            self::assertEquals(ErrorResponseVO403Fixture::build(), $exception->getErrorResponseVO403());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1291,7 +1302,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testPostTrackV1TcnReads404(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO404());
+        $body = JsonBody::encode(ErrorResponseVO404Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(404, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1305,7 +1316,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (PostTrackV1TcnNotFoundException $exception) {
             self::assertSame(404, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO404(), $exception->getErrorResponseVO404());
+            self::assertEquals(ErrorResponseVO404Fixture::build(), $exception->getErrorResponseVO404());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1322,7 +1333,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testPostTrackV1TcnReads500(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO500());
+        $body = JsonBody::encode(ErrorResponseVO500Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(500, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1340,7 +1351,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (PostTrackV1TcnInternalServerErrorException $exception) {
             self::assertSame(500, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO500(), $exception->getErrorResponseVO500());
+            self::assertEquals(ErrorResponseVO500Fixture::build(), $exception->getErrorResponseVO500());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1357,7 +1368,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testPostTrackV1TcnReads503(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO503());
+        $body = JsonBody::encode(ErrorResponseVO503Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(503, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1375,7 +1386,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (PostTrackV1TcnServiceUnavailableException $exception) {
             self::assertSame(503, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO503(), $exception->getErrorResponseVO503());
+            self::assertEquals(ErrorResponseVO503Fixture::build(), $exception->getErrorResponseVO503());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1472,7 +1483,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackingDocumentsReads200(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildTrkcResponseVOSPOD());
+        $body = JsonBody::encode(TrkcResponseVOSPODFixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(200, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1486,7 +1497,7 @@ final class OperationResponseTest extends TestCase
                 sprintf('%s answered %d with %s: %s', 'trackingDocuments', 200, $error::class, $error->getMessage()),
             );
         }
-        self::assertEquals(ModelFixtures::buildTrkcResponseVOSPOD(), $result);
+        self::assertEquals(TrkcResponseVOSPODFixture::build(), $result);
     }
 
     /**
@@ -1496,7 +1507,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackingDocumentsReads400(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO());
+        $body = JsonBody::encode(ErrorResponseVOFixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(400, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1514,7 +1525,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackingDocumentsBadRequestException $exception) {
             self::assertSame(400, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO(), $exception->getErrorResponseVO());
+            self::assertEquals(ErrorResponseVOFixture::build(), $exception->getErrorResponseVO());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1531,7 +1542,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackingDocumentsReads401(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO401());
+        $body = JsonBody::encode(ErrorResponseVO401Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(401, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1549,7 +1560,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackingDocumentsUnauthorizedException $exception) {
             self::assertSame(401, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO401(), $exception->getErrorResponseVO401());
+            self::assertEquals(ErrorResponseVO401Fixture::build(), $exception->getErrorResponseVO401());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1566,7 +1577,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackingDocumentsReads403(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO403());
+        $body = JsonBody::encode(ErrorResponseVO403Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(403, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1584,7 +1595,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackingDocumentsForbiddenException $exception) {
             self::assertSame(403, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO403(), $exception->getErrorResponseVO403());
+            self::assertEquals(ErrorResponseVO403Fixture::build(), $exception->getErrorResponseVO403());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1601,7 +1612,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackingDocumentsReads404(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO404());
+        $body = JsonBody::encode(ErrorResponseVO404Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(404, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1619,7 +1630,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackingDocumentsNotFoundException $exception) {
             self::assertSame(404, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO404(), $exception->getErrorResponseVO404());
+            self::assertEquals(ErrorResponseVO404Fixture::build(), $exception->getErrorResponseVO404());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1636,7 +1647,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackingDocumentsReads500(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO500());
+        $body = JsonBody::encode(ErrorResponseVO500Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(500, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1654,7 +1665,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackingDocumentsInternalServerErrorException $exception) {
             self::assertSame(500, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO500(), $exception->getErrorResponseVO500());
+            self::assertEquals(ErrorResponseVO500Fixture::build(), $exception->getErrorResponseVO500());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1671,7 +1682,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackingDocumentsReads503(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO503());
+        $body = JsonBody::encode(ErrorResponseVO503Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(503, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1689,7 +1700,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackingDocumentsServiceUnavailableException $exception) {
             self::assertSame(503, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO503(), $exception->getErrorResponseVO503());
+            self::assertEquals(ErrorResponseVO503Fixture::build(), $exception->getErrorResponseVO503());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1786,7 +1797,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackByTrackingNumberReads200(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildTrkcResponseVOTrackingNumber());
+        $body = JsonBody::encode(TrkcResponseVOTrackingNumberFixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(200, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1809,7 +1820,7 @@ final class OperationResponseTest extends TestCase
                 ),
             );
         }
-        self::assertEquals(ModelFixtures::buildTrkcResponseVOTrackingNumber(), $result);
+        self::assertEquals(TrkcResponseVOTrackingNumberFixture::build(), $result);
     }
 
     /**
@@ -1819,7 +1830,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackByTrackingNumberReads400(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO());
+        $body = JsonBody::encode(ErrorResponseVOFixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(400, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1837,7 +1848,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackByTrackingNumberBadRequestException $exception) {
             self::assertSame(400, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO(), $exception->getErrorResponseVO());
+            self::assertEquals(ErrorResponseVOFixture::build(), $exception->getErrorResponseVO());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1860,7 +1871,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackByTrackingNumberReads401(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO401());
+        $body = JsonBody::encode(ErrorResponseVO401Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(401, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1878,7 +1889,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackByTrackingNumberUnauthorizedException $exception) {
             self::assertSame(401, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO401(), $exception->getErrorResponseVO401());
+            self::assertEquals(ErrorResponseVO401Fixture::build(), $exception->getErrorResponseVO401());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1901,7 +1912,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackByTrackingNumberReads403(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO403());
+        $body = JsonBody::encode(ErrorResponseVO403Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(403, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1919,7 +1930,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackByTrackingNumberForbiddenException $exception) {
             self::assertSame(403, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO403(), $exception->getErrorResponseVO403());
+            self::assertEquals(ErrorResponseVO403Fixture::build(), $exception->getErrorResponseVO403());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1942,7 +1953,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackByTrackingNumberReads404(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO404());
+        $body = JsonBody::encode(ErrorResponseVO404Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(404, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -1960,7 +1971,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackByTrackingNumberNotFoundException $exception) {
             self::assertSame(404, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO404(), $exception->getErrorResponseVO404());
+            self::assertEquals(ErrorResponseVO404Fixture::build(), $exception->getErrorResponseVO404());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -1983,7 +1994,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackByTrackingNumberReads500(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO500());
+        $body = JsonBody::encode(ErrorResponseVO500Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(500, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -2001,7 +2012,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackByTrackingNumberInternalServerErrorException $exception) {
             self::assertSame(500, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO500(), $exception->getErrorResponseVO500());
+            self::assertEquals(ErrorResponseVO500Fixture::build(), $exception->getErrorResponseVO500());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {
@@ -2024,7 +2035,7 @@ final class OperationResponseTest extends TestCase
      */
     public function testTrackByTrackingNumberReads503(): void
     {
-        $body = JsonBody::encode(ModelFixtures::buildErrorResponseVO503());
+        $body = JsonBody::encode(ErrorResponseVO503Fixture::build());
         $httpClient = new RecordingHttpClient(CannedResponse::answering(503, 'application/json', $body));
         $client = Client::create(
             ClientConfig::forBaseUrl(self::BASE_URL)->withHttpClient($httpClient)->withValidation(
@@ -2042,7 +2053,7 @@ final class OperationResponseTest extends TestCase
             );
         } catch (TrackByTrackingNumberServiceUnavailableException $exception) {
             self::assertSame(503, $exception->getResponse()->getStatusCode());
-            self::assertEquals(ModelFixtures::buildErrorResponseVO503(), $exception->getErrorResponseVO503());
+            self::assertEquals(ErrorResponseVO503Fixture::build(), $exception->getErrorResponseVO503());
             self::assertSame($body, $exception->getRawResponse());
             self::assertSame($body, $exception->getResponse()->getBody()->getContents());
         } catch (ApiException $error) {

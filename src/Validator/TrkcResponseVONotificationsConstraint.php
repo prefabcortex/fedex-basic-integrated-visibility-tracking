@@ -11,6 +11,7 @@ namespace Prefabcortex\FedexBasicIntegratedVisibilityTracking\Validator;
 
 use Override;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Model\TrkcResponseVONotifications;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Optional;
@@ -21,6 +22,7 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 final class TrkcResponseVONotificationsConstraint implements ConstraintProviderInterface
 {
+    /** @return list<Constraint> */
     #[Override]
     public static function constraints(): array
     {

@@ -121,15 +121,11 @@ final readonly class TrackingReferencesResponse implements SelfNormalizingModel
         if (array_key_exists('cxsErrors', $data) && $data['cxsErrors'] !== null) {
             $cxsErrorsRaw = $data['cxsErrors'];
             if (!(is_array($cxsErrorsRaw) && array_is_list($cxsErrorsRaw))) {
-                throw new MalformedDataException(
-                    sprintf('Property "cxsErrors" must be list, got %s.', get_debug_type($cxsErrorsRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "cxsErrors" must be list, got %s.', get_debug_type($cxsErrorsRaw)));
             }
             $cxsErrors = Some::create(array_map(static function (mixed $value): CXSError {
                 if (!is_array($value)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be object, got %s.', get_debug_type($value)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value)));
                 }
                 /** @var array<string, mixed> $valueTyped */
                 $valueTyped = $value;
@@ -140,18 +136,11 @@ final readonly class TrackingReferencesResponse implements SelfNormalizingModel
         if (array_key_exists('completeTrackResults', $data) && $data['completeTrackResults'] !== null) {
             $completeTrackResultsRaw = $data['completeTrackResults'];
             if (!(is_array($completeTrackResultsRaw) && array_is_list($completeTrackResultsRaw))) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "completeTrackResults" must be list, got %s.',
-                        get_debug_type($completeTrackResultsRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "completeTrackResults" must be list, got %s.', get_debug_type($completeTrackResultsRaw)));
             }
             $completeTrackResults = Some::create(array_map(static function (mixed $value_1): CompleteTrackResult {
                 if (!is_array($value_1)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be object, got %s.', get_debug_type($value_1)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value_1)));
                 }
                 /** @var array<string, mixed> $value_1Typed */
                 $value_1Typed = $value_1;
@@ -162,15 +151,11 @@ final readonly class TrackingReferencesResponse implements SelfNormalizingModel
         if (array_key_exists('alerts', $data) && $data['alerts'] !== null) {
             $alertsRaw = $data['alerts'];
             if (!(is_array($alertsRaw) && array_is_list($alertsRaw))) {
-                throw new MalformedDataException(
-                    sprintf('Property "alerts" must be list, got %s.', get_debug_type($alertsRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "alerts" must be list, got %s.', get_debug_type($alertsRaw)));
             }
             $alerts = Some::create(array_map(static function (mixed $value_2): Alert {
                 if (!is_array($value_2)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be object, got %s.', get_debug_type($value_2)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value_2)));
                 }
                 /** @var array<string, mixed> $value_2Typed */
                 $value_2Typed = $value_2;
@@ -181,9 +166,7 @@ final readonly class TrackingReferencesResponse implements SelfNormalizingModel
         if (array_key_exists('successful', $data) && $data['successful'] !== null) {
             $successfulRaw = $data['successful'];
             if (!is_bool($successfulRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "successful" must be bool, got %s.', get_debug_type($successfulRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "successful" must be bool, got %s.', get_debug_type($successfulRaw)));
             }
             $successful = Some::create($successfulRaw);
         }
@@ -206,6 +189,19 @@ final readonly class TrackingReferencesResponse implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->normalize(NormalizationTarget::Json);
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
     }
 
     /** @return array<int|string, mixed> */
@@ -245,7 +241,7 @@ final readonly class TrackingReferencesResponse implements SelfNormalizingModel
             $successful = $successfulOption->get();
             $dataArray['successful'] = $successful;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

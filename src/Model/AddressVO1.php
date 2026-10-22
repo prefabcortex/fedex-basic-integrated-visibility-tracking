@@ -183,33 +183,25 @@ final readonly class AddressVO1 implements SelfNormalizingModel
         if (array_key_exists('classification', $data) && $data['classification'] !== null) {
             $classificationRaw = $data['classification'];
             if (!is_string($classificationRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "classification" must be string, got %s.', get_debug_type($classificationRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "classification" must be string, got %s.', get_debug_type($classificationRaw)));
             }
             $classification = Some::create($classificationRaw);
         }
         if (array_key_exists('residential', $data) && $data['residential'] !== null) {
             $residentialRaw = $data['residential'];
             if (!is_bool($residentialRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "residential" must be bool, got %s.', get_debug_type($residentialRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "residential" must be bool, got %s.', get_debug_type($residentialRaw)));
             }
             $residential = Some::create($residentialRaw);
         }
         if (array_key_exists('streetLines', $data)) {
             $streetLinesRaw = $data['streetLines'];
             if (!(is_array($streetLinesRaw) && array_is_list($streetLinesRaw))) {
-                throw new MalformedDataException(
-                    sprintf('Property "streetLines" must be list, got %s.', get_debug_type($streetLinesRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "streetLines" must be list, got %s.', get_debug_type($streetLinesRaw)));
             }
             $streetLines = array_map(static function (mixed $value): string {
                 if (!is_string($value)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be string, got %s.', get_debug_type($value)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be string, got %s.', get_debug_type($value)));
                 }
 
                 return $value;
@@ -218,39 +210,28 @@ final readonly class AddressVO1 implements SelfNormalizingModel
         if (array_key_exists('city', $data) && $data['city'] !== null) {
             $cityRaw = $data['city'];
             if (!is_string($cityRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "city" must be string, got %s.', get_debug_type($cityRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "city" must be string, got %s.', get_debug_type($cityRaw)));
             }
             $city = Some::create($cityRaw);
         }
         if (array_key_exists('stateOrProvinceCode', $data) && $data['stateOrProvinceCode'] !== null) {
             $stateOrProvinceCodeRaw = $data['stateOrProvinceCode'];
             if (!is_string($stateOrProvinceCodeRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "stateOrProvinceCode" must be string, got %s.',
-                        get_debug_type($stateOrProvinceCodeRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "stateOrProvinceCode" must be string, got %s.', get_debug_type($stateOrProvinceCodeRaw)));
             }
             $stateOrProvinceCode = Some::create($stateOrProvinceCodeRaw);
         }
         if (array_key_exists('postalCode', $data) && $data['postalCode'] !== null) {
             $postalCodeRaw = $data['postalCode'];
             if (!is_string($postalCodeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "postalCode" must be string, got %s.', get_debug_type($postalCodeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "postalCode" must be string, got %s.', get_debug_type($postalCodeRaw)));
             }
             $postalCode = Some::create($postalCodeRaw);
         }
         if (array_key_exists('countryCode', $data)) {
             $countryCodeRaw = $data['countryCode'];
             if (!is_string($countryCodeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "countryCode" must be string, got %s.', get_debug_type($countryCodeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "countryCode" must be string, got %s.', get_debug_type($countryCodeRaw)));
             }
             $countryCode = $countryCodeRaw;
         }
@@ -301,11 +282,7 @@ final readonly class AddressVO1 implements SelfNormalizingModel
             $residential = $residentialOption->get();
             $dataArray['residential'] = $residential;
         }
-        $values = [];
-        foreach ($this->streetLines as $value) {
-            $values[] = $value;
-        }
-        $dataArray['streetLines'] = $values;
+        $dataArray['streetLines'] = $this->streetLines;
         $cityOption = $this->city;
         if ($cityOption->isDefined()) {
             $city = $cityOption->get();
@@ -322,7 +299,7 @@ final readonly class AddressVO1 implements SelfNormalizingModel
             $dataArray['postalCode'] = $postalCode;
         }
         $dataArray['countryCode'] = $this->countryCode;
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -331,6 +308,19 @@ final readonly class AddressVO1 implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): AddressVO1Builder

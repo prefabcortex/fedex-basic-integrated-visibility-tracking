@@ -25,6 +25,7 @@ use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\BaseOperationTrait;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\ContentType;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\HeaderParameters;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\JsonBody;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\JsonRequestBody;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\Operation;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\OperationTrait;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\Payload;
@@ -60,14 +61,11 @@ use function in_array;
  *
  * @implements Operation<TrkcResponseVONotifications>
  */
-final class PostTrackV1Notification implements Operation
+final readonly class PostTrackV1Notification implements Operation
 {
     use BaseOperationTrait;
     use OperationTrait;
     use ValidatorTrait;
-    /** @var Option<FullSchemaNotification> */
-    private readonly Option $body;
-    private readonly PostTrackV1NotificationHeaderParameters $headerParameters;
 
     /**
      * This endpoint helps you setup up, customize the tracking event notifications to be received
@@ -77,10 +75,10 @@ final class PostTrackV1Notification implements Operation
      *
      * @param Option<FullSchemaNotification> $requestBody
      */
-    public function __construct(Option $requestBody, PostTrackV1NotificationHeaderParameters $headerParameters)
-    {
-        $this->body = $requestBody;
-        $this->headerParameters = $headerParameters;
+    public function __construct(
+        private Option $requestBody,
+        private PostTrackV1NotificationHeaderParameters $headerParameters,
+    ) {
     }
 
     #[Override]
@@ -102,13 +100,13 @@ final class PostTrackV1Notification implements Operation
     #[Override]
     public function getPayload(StreamFactoryInterface $streamFactory, ValidationMode $validation): Payload
     {
-        if ($this->body->isDefined()) {
-            $body = $this->body->get();
+        if ($this->requestBody->isDefined()) {
+            $body = $this->requestBody->get();
             if (ValidationMode::Strict === $validation) {
-                $this->validate($body->toArray(), FullSchemaNotificationConstraint::constraints());
+                $this->validate($body->toRequestArray(), FullSchemaNotificationConstraint::constraints());
             }
 
-            return new Payload(['Content-Type' => ['application/json']], JsonBody::encode($body));
+            return new Payload(['Content-Type' => ['application/json']], JsonRequestBody::encode($body));
         }
 
         return new Payload([], '');
@@ -160,66 +158,42 @@ final class PostTrackV1Notification implements Operation
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVOConstraint::constraints());
             }
-            throw new PostTrackV1NotificationBadRequestException(
-                ErrorResponseVO::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new PostTrackV1NotificationBadRequestException(ErrorResponseVO::fromArray($typedData), $response, $body);
         }
         if (401 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO401Constraint::constraints());
             }
-            throw new PostTrackV1NotificationUnauthorizedException(
-                ErrorResponseVO401::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new PostTrackV1NotificationUnauthorizedException(ErrorResponseVO401::fromArray($typedData), $response, $body);
         }
         if (403 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO403Constraint::constraints());
             }
-            throw new PostTrackV1NotificationForbiddenException(
-                ErrorResponseVO403::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new PostTrackV1NotificationForbiddenException(ErrorResponseVO403::fromArray($typedData), $response, $body);
         }
         if (404 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO404Constraint::constraints());
             }
-            throw new PostTrackV1NotificationNotFoundException(
-                ErrorResponseVO404::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new PostTrackV1NotificationNotFoundException(ErrorResponseVO404::fromArray($typedData), $response, $body);
         }
         if (500 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO500Constraint::constraints());
             }
-            throw new PostTrackV1NotificationInternalServerErrorException(
-                ErrorResponseVO500::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new PostTrackV1NotificationInternalServerErrorException(ErrorResponseVO500::fromArray($typedData), $response, $body);
         }
         if (503 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO503Constraint::constraints());
             }
-            throw new PostTrackV1NotificationServiceUnavailableException(
-                ErrorResponseVO503::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new PostTrackV1NotificationServiceUnavailableException(ErrorResponseVO503::fromArray($typedData), $response, $body);
         }
         if (in_array($status, [200, 400, 401, 403, 404, 500, 503], true)) {
             throw new UnexpectedContentTypeException($response, $body);

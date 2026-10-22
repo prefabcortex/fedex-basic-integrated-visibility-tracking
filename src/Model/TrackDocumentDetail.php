@@ -89,18 +89,14 @@ final readonly class TrackDocumentDetail implements SelfNormalizingModel
         if (array_key_exists('documentType', $data)) {
             $documentTypeRaw = $data['documentType'];
             if (!is_string($documentTypeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "documentType" must be string, got %s.', get_debug_type($documentTypeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "documentType" must be string, got %s.', get_debug_type($documentTypeRaw)));
             }
             $documentType = $documentTypeRaw;
         }
         if (array_key_exists('documentFormat', $data) && $data['documentFormat'] !== null) {
             $documentFormatRaw = $data['documentFormat'];
             if (!is_string($documentFormatRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "documentFormat" must be string, got %s.', get_debug_type($documentFormatRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "documentFormat" must be string, got %s.', get_debug_type($documentFormatRaw)));
             }
             $documentFormat = Some::create($documentFormatRaw);
         }
@@ -124,7 +120,7 @@ final readonly class TrackDocumentDetail implements SelfNormalizingModel
             $documentFormat = $documentFormatOption->get();
             $dataArray['documentFormat'] = $documentFormat;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -133,6 +129,19 @@ final readonly class TrackDocumentDetail implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): TrackDocumentDetailBuilder

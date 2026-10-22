@@ -67,18 +67,14 @@ final readonly class Parameter2 implements SelfNormalizingModel
         if (array_key_exists('value', $data) && $data['value'] !== null) {
             $valueRaw = $data['value'];
             if (!is_string($valueRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "value" must be string, got %s.', get_debug_type($valueRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "value" must be string, got %s.', get_debug_type($valueRaw)));
             }
             $value = Some::create($valueRaw);
         }
         if (array_key_exists('key', $data) && $data['key'] !== null) {
             $keyRaw = $data['key'];
             if (!is_string($keyRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "key" must be string, got %s.', get_debug_type($keyRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "key" must be string, got %s.', get_debug_type($keyRaw)));
             }
             $key = Some::create($keyRaw);
         }
@@ -103,7 +99,7 @@ final readonly class Parameter2 implements SelfNormalizingModel
             $key = $keyOption->get();
             $dataArray['key'] = $key;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -112,6 +108,19 @@ final readonly class Parameter2 implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): Parameter2Builder

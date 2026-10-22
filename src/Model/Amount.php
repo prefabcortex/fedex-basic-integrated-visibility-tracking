@@ -80,24 +80,17 @@ final readonly class Amount implements SelfNormalizingModel
     {
         $currency = None::create();
         $value = None::create();
-        if (array_key_exists('value', $data) && is_int($data['value'])) {
-            $data['value'] = (float) $data['value'];
-        }
         if (array_key_exists('currency', $data) && $data['currency'] !== null) {
             $currencyRaw = $data['currency'];
             if (!is_string($currencyRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "currency" must be string, got %s.', get_debug_type($currencyRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "currency" must be string, got %s.', get_debug_type($currencyRaw)));
             }
             $currency = Some::create($currencyRaw);
         }
         if (array_key_exists('value', $data) && $data['value'] !== null) {
             $valueRaw = $data['value'];
             if (!(is_float($valueRaw) || is_int($valueRaw))) {
-                throw new MalformedDataException(
-                    sprintf('Property "value" must be number, got %s.', get_debug_type($valueRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "value" must be number, got %s.', get_debug_type($valueRaw)));
             }
             $value = Some::create((float) $valueRaw);
         }
@@ -122,7 +115,7 @@ final readonly class Amount implements SelfNormalizingModel
             $value = $valueOption->get();
             $dataArray['value'] = $value;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
@@ -131,6 +124,19 @@ final readonly class Amount implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->toArray();
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->toArray();
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return $this->jsonSerialize();
     }
 
     public function toBuilder(): AmountBuilder

@@ -83,9 +83,7 @@ final readonly class TrackingNotificationDetail implements SelfNormalizingModel
         if (array_key_exists('localization', $data)) {
             $localizationRaw = $data['localization'];
             if (!is_array($localizationRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "localization" must be object, got %s.', get_debug_type($localizationRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "localization" must be object, got %s.', get_debug_type($localizationRaw)));
             }
             /** @var non-empty-array<string, mixed> $localizationRawTyped */
             $localizationRawTyped = $localizationRaw;
@@ -94,9 +92,7 @@ final readonly class TrackingNotificationDetail implements SelfNormalizingModel
         if (array_key_exists('emailDetail', $data)) {
             $emailDetailRaw = $data['emailDetail'];
             if (!is_array($emailDetailRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "emailDetail" must be object, got %s.', get_debug_type($emailDetailRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "emailDetail" must be object, got %s.', get_debug_type($emailDetailRaw)));
             }
             /** @var non-empty-array<string, mixed> $emailDetailRawTyped */
             $emailDetailRawTyped = $emailDetailRaw;
@@ -105,12 +101,7 @@ final readonly class TrackingNotificationDetail implements SelfNormalizingModel
         if (array_key_exists('notificationType', $data)) {
             $notificationTypeRaw = $data['notificationType'];
             if (!is_string($notificationTypeRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "notificationType" must be string, got %s.',
-                        get_debug_type($notificationTypeRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "notificationType" must be string, got %s.', get_debug_type($notificationTypeRaw)));
             }
             $notificationType = $notificationTypeRaw;
         }
@@ -118,10 +109,10 @@ final readonly class TrackingNotificationDetail implements SelfNormalizingModel
             $data,
             ['localization' => true, 'emailDetail' => true, 'notificationType' => true],
         );
-        if ($localization === null) {
+        if (!$localization instanceof Localization) {
             throw new MalformedDataException('Required property "localization" is missing from the document.');
         }
-        if ($emailDetail === null) {
+        if (!$emailDetail instanceof EmailDetail) {
             throw new MalformedDataException('Required property "emailDetail" is missing from the document.');
         }
         if ($notificationType === null) {
@@ -145,6 +136,19 @@ final readonly class TrackingNotificationDetail implements SelfNormalizingModel
     }
 
     /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
+    }
+
+    /** @return array<int|string, mixed> */
     private function normalize(NormalizationTarget $normalizationTarget): array
     {
         /** @var array<int|string, mixed> $dataArray */
@@ -152,7 +156,7 @@ final readonly class TrackingNotificationDetail implements SelfNormalizingModel
         $dataArray['localization'] = $normalizationTarget->model($this->localization);
         $dataArray['emailDetail'] = $normalizationTarget->model($this->emailDetail);
         $dataArray['notificationType'] = $this->notificationType;
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

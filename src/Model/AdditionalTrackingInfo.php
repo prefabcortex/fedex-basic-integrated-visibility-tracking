@@ -116,39 +116,25 @@ final readonly class AdditionalTrackingInfo implements SelfNormalizingModel
         if (array_key_exists('hasAssociatedShipments', $data) && $data['hasAssociatedShipments'] !== null) {
             $hasAssociatedShipmentsRaw = $data['hasAssociatedShipments'];
             if (!is_bool($hasAssociatedShipmentsRaw)) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "hasAssociatedShipments" must be bool, got %s.',
-                        get_debug_type($hasAssociatedShipmentsRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "hasAssociatedShipments" must be bool, got %s.', get_debug_type($hasAssociatedShipmentsRaw)));
             }
             $hasAssociatedShipments = Some::create($hasAssociatedShipmentsRaw);
         }
         if (array_key_exists('nickname', $data) && $data['nickname'] !== null) {
             $nicknameRaw = $data['nickname'];
             if (!is_string($nicknameRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "nickname" must be string, got %s.', get_debug_type($nicknameRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "nickname" must be string, got %s.', get_debug_type($nicknameRaw)));
             }
             $nickname = Some::create($nicknameRaw);
         }
         if (array_key_exists('packageIdentifiers', $data) && $data['packageIdentifiers'] !== null) {
             $packageIdentifiersRaw = $data['packageIdentifiers'];
             if (!(is_array($packageIdentifiersRaw) && array_is_list($packageIdentifiersRaw))) {
-                throw new MalformedDataException(
-                    sprintf(
-                        'Property "packageIdentifiers" must be list, got %s.',
-                        get_debug_type($packageIdentifiersRaw),
-                    ),
-                );
+                throw new MalformedDataException(sprintf('Property "packageIdentifiers" must be list, got %s.', get_debug_type($packageIdentifiersRaw)));
             }
             $packageIdentifiers = Some::create(array_map(static function (mixed $value): PackageIdentifier {
                 if (!is_array($value)) {
-                    throw new MalformedDataException(
-                        sprintf('Array item must be object, got %s.', get_debug_type($value)),
-                    );
+                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value)));
                 }
                 /** @var array<string, mixed> $valueTyped */
                 $valueTyped = $value;
@@ -159,9 +145,7 @@ final readonly class AdditionalTrackingInfo implements SelfNormalizingModel
         if (array_key_exists('shipmentNotes', $data) && $data['shipmentNotes'] !== null) {
             $shipmentNotesRaw = $data['shipmentNotes'];
             if (!is_string($shipmentNotesRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "shipmentNotes" must be string, got %s.', get_debug_type($shipmentNotesRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "shipmentNotes" must be string, got %s.', get_debug_type($shipmentNotesRaw)));
             }
             $shipmentNotes = Some::create($shipmentNotesRaw);
         }
@@ -189,6 +173,19 @@ final readonly class AdditionalTrackingInfo implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->normalize(NormalizationTarget::Json);
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
     }
 
     /** @return array<int|string, mixed> */
@@ -220,7 +217,7 @@ final readonly class AdditionalTrackingInfo implements SelfNormalizingModel
             $shipmentNotes = $shipmentNotesOption->get();
             $dataArray['shipmentNotes'] = $shipmentNotes;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }

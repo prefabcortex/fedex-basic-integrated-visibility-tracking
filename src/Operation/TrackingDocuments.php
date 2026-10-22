@@ -25,6 +25,7 @@ use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\BaseOperationTrait;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\ContentType;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\HeaderParameters;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\JsonBody;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\JsonRequestBody;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\Operation;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\OperationTrait;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Http\Payload;
@@ -60,14 +61,11 @@ use function in_array;
  *
  * @implements Operation<TrkcResponseVOSPOD>
  */
-final class TrackingDocuments implements Operation
+final readonly class TrackingDocuments implements Operation
 {
     use BaseOperationTrait;
     use OperationTrait;
     use ValidatorTrait;
-    /** @var Option<FullSchemaSPOD> */
-    private readonly Option $body;
-    private readonly TrackingDocumentsHeaderParameters $headerParameters;
 
     /**
      * This endpoint helps you to request a letter that includes the recipient's signature as a
@@ -77,10 +75,10 @@ final class TrackingDocuments implements Operation
      *
      * @param Option<FullSchemaSPOD> $requestBody
      */
-    public function __construct(Option $requestBody, TrackingDocumentsHeaderParameters $headerParameters)
-    {
-        $this->body = $requestBody;
-        $this->headerParameters = $headerParameters;
+    public function __construct(
+        private Option $requestBody,
+        private TrackingDocumentsHeaderParameters $headerParameters,
+    ) {
     }
 
     #[Override]
@@ -102,13 +100,13 @@ final class TrackingDocuments implements Operation
     #[Override]
     public function getPayload(StreamFactoryInterface $streamFactory, ValidationMode $validation): Payload
     {
-        if ($this->body->isDefined()) {
-            $body = $this->body->get();
+        if ($this->requestBody->isDefined()) {
+            $body = $this->requestBody->get();
             if (ValidationMode::Strict === $validation) {
-                $this->validate($body->toArray(), FullSchemaSPODConstraint::constraints());
+                $this->validate($body->toRequestArray(), FullSchemaSPODConstraint::constraints());
             }
 
-            return new Payload(['Content-Type' => ['application/json']], JsonBody::encode($body));
+            return new Payload(['Content-Type' => ['application/json']], JsonRequestBody::encode($body));
         }
 
         return new Payload([], '');
@@ -167,11 +165,7 @@ final class TrackingDocuments implements Operation
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO401Constraint::constraints());
             }
-            throw new TrackingDocumentsUnauthorizedException(
-                ErrorResponseVO401::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new TrackingDocumentsUnauthorizedException(ErrorResponseVO401::fromArray($typedData), $response, $body);
         }
         if (403 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
@@ -192,22 +186,14 @@ final class TrackingDocuments implements Operation
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO500Constraint::constraints());
             }
-            throw new TrackingDocumentsInternalServerErrorException(
-                ErrorResponseVO500::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new TrackingDocumentsInternalServerErrorException(ErrorResponseVO500::fromArray($typedData), $response, $body);
         }
         if (503 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO503Constraint::constraints());
             }
-            throw new TrackingDocumentsServiceUnavailableException(
-                ErrorResponseVO503::fromArray($typedData),
-                $response,
-                $body,
-            );
+            throw new TrackingDocumentsServiceUnavailableException(ErrorResponseVO503::fromArray($typedData), $response, $body);
         }
         if (in_array($status, [200, 400, 401, 403, 404, 500, 503], true)) {
             throw new UnexpectedContentTypeException($response, $body);

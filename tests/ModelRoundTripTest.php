@@ -7,7 +7,7 @@ namespace Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Model\SelfNormalizingModel;
-use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\ModelFixtureProviders;
+use Prefabcortex\FedexBasicIntegratedVisibilityTracking\Tests\Fixture\Model\ModelFixtureProviders;
 use RuntimeException;
 
 /**

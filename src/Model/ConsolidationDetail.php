@@ -135,27 +135,21 @@ final readonly class ConsolidationDetail implements SelfNormalizingModel
         if (array_key_exists('timeStamp', $data) && $data['timeStamp'] !== null) {
             $timeStampRaw = $data['timeStamp'];
             if (!is_string($timeStampRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "timeStamp" must be string, got %s.', get_debug_type($timeStampRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "timeStamp" must be string, got %s.', get_debug_type($timeStampRaw)));
             }
             $timeStamp = Some::create($timeStampRaw);
         }
         if (array_key_exists('consolidationID', $data) && $data['consolidationID'] !== null) {
             $consolidationIDRaw = $data['consolidationID'];
             if (!is_string($consolidationIDRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "consolidationID" must be string, got %s.', get_debug_type($consolidationIDRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "consolidationID" must be string, got %s.', get_debug_type($consolidationIDRaw)));
             }
             $consolidationID = Some::create($consolidationIDRaw);
         }
         if (array_key_exists('reasonDetail', $data) && $data['reasonDetail'] !== null) {
             $reasonDetailRaw = $data['reasonDetail'];
             if (!is_array($reasonDetailRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "reasonDetail" must be object, got %s.', get_debug_type($reasonDetailRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "reasonDetail" must be object, got %s.', get_debug_type($reasonDetailRaw)));
             }
             /** @var array<string, mixed> $reasonDetailRawTyped */
             $reasonDetailRawTyped = $reasonDetailRaw;
@@ -164,18 +158,14 @@ final readonly class ConsolidationDetail implements SelfNormalizingModel
         if (array_key_exists('packageCount', $data) && $data['packageCount'] !== null) {
             $packageCountRaw = $data['packageCount'];
             if (!is_int($packageCountRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "packageCount" must be int, got %s.', get_debug_type($packageCountRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "packageCount" must be int, got %s.', get_debug_type($packageCountRaw)));
             }
             $packageCount = Some::create($packageCountRaw);
         }
         if (array_key_exists('eventType', $data) && $data['eventType'] !== null) {
             $eventTypeRaw = $data['eventType'];
             if (!is_string($eventTypeRaw)) {
-                throw new MalformedDataException(
-                    sprintf('Property "eventType" must be string, got %s.', get_debug_type($eventTypeRaw)),
-                );
+                throw new MalformedDataException(sprintf('Property "eventType" must be string, got %s.', get_debug_type($eventTypeRaw)));
             }
             $eventType = Some::create($eventTypeRaw);
         }
@@ -204,6 +194,19 @@ final readonly class ConsolidationDetail implements SelfNormalizingModel
     public function jsonSerialize(): object
     {
         return (object) $this->normalize(NormalizationTarget::Json);
+    }
+
+    /** @return array<int|string, mixed> */
+    #[Override]
+    public function toRequestArray(): array
+    {
+        return $this->normalize(NormalizationTarget::RequestArray);
+    }
+
+    #[Override]
+    public function toRequestJson(): object
+    {
+        return (object) $this->normalize(NormalizationTarget::RequestJson);
     }
 
     /** @return array<int|string, mixed> */
@@ -236,7 +239,7 @@ final readonly class ConsolidationDetail implements SelfNormalizingModel
             $eventType = $eventTypeOption->get();
             $dataArray['eventType'] = $eventType;
         }
-        $dataArray += $this->getAdditionalProperties();
+        $dataArray += $this->additionalProperties;
 
         return $dataArray;
     }
