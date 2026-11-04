@@ -100,11 +100,18 @@ final readonly class TrackingEventNotificationDetail implements SelfNormalizingM
         if (array_key_exists('trackingNotifications', $data)) {
             $trackingNotificationsRaw = $data['trackingNotifications'];
             if (!(is_array($trackingNotificationsRaw) && array_is_list($trackingNotificationsRaw))) {
-                throw new MalformedDataException(sprintf('Property "trackingNotifications" must be list, got %s.', get_debug_type($trackingNotificationsRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "trackingNotifications" must be list, got %s.',
+                        get_debug_type($trackingNotificationsRaw),
+                    ),
+                );
             }
             $trackingNotifications = array_map(static function (mixed $value): TrackingNotification {
                 if (!is_array($value)) {
-                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value)));
+                    throw new MalformedDataException(
+                        sprintf('Array item must be object, got %s.', get_debug_type($value)),
+                    );
                 }
                 /** @var non-empty-array<string, mixed> $valueTyped */
                 $valueTyped = $value;
@@ -115,14 +122,27 @@ final readonly class TrackingEventNotificationDetail implements SelfNormalizingM
         if (array_key_exists('personalMessage', $data) && $data['personalMessage'] !== null) {
             $personalMessageRaw = $data['personalMessage'];
             if (!is_string($personalMessageRaw)) {
-                throw new MalformedDataException(sprintf('Property "personalMessage" must be string, got %s.', get_debug_type($personalMessageRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "personalMessage" must be string, got %s.', get_debug_type($personalMessageRaw)),
+                );
             }
             $personalMessage = Some::create($personalMessageRaw);
         }
         if (array_key_exists('supportHTML', $data) && $data['supportHTML'] !== null) {
             $supportHTMLRaw = $data['supportHTML'];
-            if (!(is_string($supportHTMLRaw) || is_int($supportHTMLRaw) || is_float($supportHTMLRaw) || is_bool($supportHTMLRaw) || is_array($supportHTMLRaw))) {
-                throw new MalformedDataException(sprintf('Property "supportHTML" must be string, int, float, bool or array, got %s.', get_debug_type($supportHTMLRaw)));
+            if (!(
+                is_string($supportHTMLRaw)
+                || is_int($supportHTMLRaw)
+                || is_float($supportHTMLRaw)
+                || is_bool($supportHTMLRaw)
+                || is_array($supportHTMLRaw)
+            )) {
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "supportHTML" must be string, int, float, bool or array, got %s.',
+                        get_debug_type($supportHTMLRaw),
+                    ),
+                );
             }
             $supportHTML = Some::create($supportHTMLRaw);
         }

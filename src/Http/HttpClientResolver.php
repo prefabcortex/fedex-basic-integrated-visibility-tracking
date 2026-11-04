@@ -93,6 +93,7 @@ final class HttpClientResolver
                 return $client[0];
             }
         }
+
         throw NoHttpClientException::noneOf(self::names());
     }
 
@@ -131,14 +132,14 @@ final class HttpClientResolver
             // `new Psr18Client()` would; it is reached by reflection because its name is data here.
             $factory = self::existing(substr($className, 0, (int) strrpos($className, '\\')) . '\HttpClient');
 
-            return [] === $factory ? [] : [
-                new $className(
+            return [] === $factory
+                ? []
+                : [new $className(
                     new ReflectionMethod($factory[0], 'create')->invoke(
                         null,
                         ['timeout' => $timeout->totalSeconds, 'max_duration' => $timeout->totalSeconds],
                     ),
-                ),
-            ];
+                )];
         }
         if (self::GUZZLE_ADAPTER === $construction) {
             // The adapter wraps a Guzzle client, and takes a configured one. That client is the

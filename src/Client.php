@@ -396,11 +396,9 @@ final class Client
     public static function withAuthenticators(ClientConfig $config, Authenticator ...$authenticators): self
     {
         $factory = new Psr17Factory();
-        $httpClient = $config->httpClient->isDefined() ? $config->httpClient->get() : HttpClientResolver::resolve(
-            $factory,
-            $factory,
-            $config->timeout,
-        );
+        $httpClient = $config->httpClient->isDefined()
+            ? $config->httpClient->get()
+            : HttpClientResolver::resolve($factory, $factory, $config->timeout);
 
         return new self(
             $config->servers,

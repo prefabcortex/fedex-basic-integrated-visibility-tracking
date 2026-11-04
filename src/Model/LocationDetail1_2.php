@@ -96,14 +96,21 @@ final readonly class LocationDetail1_2 implements SelfNormalizingModel
         if (array_key_exists('locationId', $data) && $data['locationId'] !== null) {
             $locationIdRaw = $data['locationId'];
             if (!is_string($locationIdRaw)) {
-                throw new MalformedDataException(sprintf('Property "locationId" must be string, got %s.', get_debug_type($locationIdRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "locationId" must be string, got %s.', get_debug_type($locationIdRaw)),
+                );
             }
             $locationId = Some::create($locationIdRaw);
         }
         if (array_key_exists('locationContactAndAddress', $data) && $data['locationContactAndAddress'] !== null) {
             $locationContactAndAddressRaw = $data['locationContactAndAddress'];
             if (!is_array($locationContactAndAddressRaw)) {
-                throw new MalformedDataException(sprintf('Property "locationContactAndAddress" must be object, got %s.', get_debug_type($locationContactAndAddressRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "locationContactAndAddress" must be object, got %s.',
+                        get_debug_type($locationContactAndAddressRaw),
+                    ),
+                );
             }
             /** @var array<string, mixed> $locationContactAndAddressRawTyped */
             $locationContactAndAddressRawTyped = $locationContactAndAddressRaw;
@@ -114,7 +121,9 @@ final readonly class LocationDetail1_2 implements SelfNormalizingModel
         if (array_key_exists('locationType', $data) && $data['locationType'] !== null) {
             $locationTypeRaw = $data['locationType'];
             if (!is_string($locationTypeRaw)) {
-                throw new MalformedDataException(sprintf('Property "locationType" must be string, got %s.', get_debug_type($locationTypeRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "locationType" must be string, got %s.', get_debug_type($locationTypeRaw)),
+                );
             }
             $locationType = Some::create(
                 LocationDetail1LocationTypeEnum::tryFrom($locationTypeRaw) ?? UnknownEnumValue::of($locationTypeRaw),

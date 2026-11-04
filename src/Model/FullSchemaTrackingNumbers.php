@@ -79,18 +79,27 @@ final readonly class FullSchemaTrackingNumbers implements SelfNormalizingModel
         if (array_key_exists('includeDetailedScans', $data)) {
             $includeDetailedScansRaw = $data['includeDetailedScans'];
             if (!is_bool($includeDetailedScansRaw)) {
-                throw new MalformedDataException(sprintf('Property "includeDetailedScans" must be bool, got %s.', get_debug_type($includeDetailedScansRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "includeDetailedScans" must be bool, got %s.',
+                        get_debug_type($includeDetailedScansRaw),
+                    ),
+                );
             }
             $includeDetailedScans = $includeDetailedScansRaw;
         }
         if (array_key_exists('trackingInfo', $data)) {
             $trackingInfoRaw = $data['trackingInfo'];
             if (!(is_array($trackingInfoRaw) && array_is_list($trackingInfoRaw))) {
-                throw new MalformedDataException(sprintf('Property "trackingInfo" must be list, got %s.', get_debug_type($trackingInfoRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "trackingInfo" must be list, got %s.', get_debug_type($trackingInfoRaw)),
+                );
             }
             $trackingInfo = array_map(static function (mixed $value): TrackingInfo {
                 if (!is_array($value)) {
-                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value)));
+                    throw new MalformedDataException(
+                        sprintf('Array item must be object, got %s.', get_debug_type($value)),
+                    );
                 }
                 /** @var non-empty-array<string, mixed> $valueTyped */
                 $valueTyped = $value;

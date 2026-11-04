@@ -83,18 +83,24 @@ final readonly class RequestedAppointmentDetail implements SelfNormalizingModel
         if (array_key_exists('date', $data) && $data['date'] !== null) {
             $dateRaw = $data['date'];
             if (!is_string($dateRaw)) {
-                throw new MalformedDataException(sprintf('Property "date" must be string, got %s.', get_debug_type($dateRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "date" must be string, got %s.', get_debug_type($dateRaw)),
+                );
             }
             $date = Some::create($dateRaw);
         }
         if (array_key_exists('window', $data) && $data['window'] !== null) {
             $windowRaw = $data['window'];
             if (!(is_array($windowRaw) && array_is_list($windowRaw))) {
-                throw new MalformedDataException(sprintf('Property "window" must be list, got %s.', get_debug_type($windowRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "window" must be list, got %s.', get_debug_type($windowRaw)),
+                );
             }
             $window = Some::create(array_map(static function (mixed $value): TimeWindow {
                 if (!is_array($value)) {
-                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value)));
+                    throw new MalformedDataException(
+                        sprintf('Array item must be object, got %s.', get_debug_type($value)),
+                    );
                 }
                 /** @var array<string, mixed> $valueTyped */
                 $valueTyped = $value;

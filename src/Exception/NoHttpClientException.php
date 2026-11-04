@@ -32,14 +32,13 @@ final class NoHttpClientException extends RuntimeException implements ApiExcepti
     /** @param list<string> $candidates the class names that were looked for, in the order tried */
     public static function noneOf(array $candidates): self
     {
-        // One literal rather than two joined by `.`: this file is copied into every generated
-        // package, where `no_useless_concat_operator` would merge them anyway and the two
-        // spellings would drift apart between a run with the fixer and one without.
-        return new self(
-            sprintf(
-                'No PSR-18 HTTP client found. None of the known implementations is installed (%s). Install one of them, or pass the client you already use to ClientConfig::withHttpClient().',
-                implode(', ', $candidates),
-            ),
-        );
+        // A nowdoc rather than literals joined by `.`: php-cs-fixer's `no_useless_concat_operator`
+        // would merge those into one line again. Each line of it says one thing.
+        $template = <<<'TEXT'
+            No PSR-18 HTTP client found; looked for %s.
+            Install one of them, or pass the client you use to ClientConfig::withHttpClient().
+            TEXT;
+
+        return new self(sprintf($template, implode(', ', $candidates)));
     }
 }

@@ -74,7 +74,9 @@ final readonly class ContactAndAddress implements SelfNormalizingModel
         if (array_key_exists('contact', $data)) {
             $contactRaw = $data['contact'];
             if (!is_array($contactRaw)) {
-                throw new MalformedDataException(sprintf('Property "contact" must be object, got %s.', get_debug_type($contactRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "contact" must be object, got %s.', get_debug_type($contactRaw)),
+                );
             }
             /** @var array<string, mixed> $contactRawTyped */
             $contactRawTyped = $contactRaw;
@@ -83,7 +85,9 @@ final readonly class ContactAndAddress implements SelfNormalizingModel
         if (array_key_exists('address', $data)) {
             $addressRaw = $data['address'];
             if (!is_array($addressRaw)) {
-                throw new MalformedDataException(sprintf('Property "address" must be object, got %s.', get_debug_type($addressRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "address" must be object, got %s.', get_debug_type($addressRaw)),
+                );
             }
             /** @var non-empty-array<string, mixed> $addressRawTyped */
             $addressRawTyped = $addressRaw;

@@ -133,11 +133,15 @@ final readonly class TrackShipmentDetail implements SelfNormalizingModel
         if (array_key_exists('contents', $data) && $data['contents'] !== null) {
             $contentsRaw = $data['contents'];
             if (!(is_array($contentsRaw) && array_is_list($contentsRaw))) {
-                throw new MalformedDataException(sprintf('Property "contents" must be list, got %s.', get_debug_type($contentsRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "contents" must be list, got %s.', get_debug_type($contentsRaw)),
+                );
             }
             $contents = Some::create(array_map(static function (mixed $value): ShipmentContent {
                 if (!is_array($value)) {
-                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value)));
+                    throw new MalformedDataException(
+                        sprintf('Array item must be object, got %s.', get_debug_type($value)),
+                    );
                 }
                 /** @var array<string, mixed> $valueTyped */
                 $valueTyped = $value;
@@ -148,18 +152,27 @@ final readonly class TrackShipmentDetail implements SelfNormalizingModel
         if (array_key_exists('beforePossessionStatus', $data) && $data['beforePossessionStatus'] !== null) {
             $beforePossessionStatusRaw = $data['beforePossessionStatus'];
             if (!is_bool($beforePossessionStatusRaw)) {
-                throw new MalformedDataException(sprintf('Property "beforePossessionStatus" must be bool, got %s.', get_debug_type($beforePossessionStatusRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "beforePossessionStatus" must be bool, got %s.',
+                        get_debug_type($beforePossessionStatusRaw),
+                    ),
+                );
             }
             $beforePossessionStatus = Some::create($beforePossessionStatusRaw);
         }
         if (array_key_exists('weight', $data) && $data['weight'] !== null) {
             $weightRaw = $data['weight'];
             if (!(is_array($weightRaw) && array_is_list($weightRaw))) {
-                throw new MalformedDataException(sprintf('Property "weight" must be list, got %s.', get_debug_type($weightRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "weight" must be list, got %s.', get_debug_type($weightRaw)),
+                );
             }
             $weight = Some::create(array_map(static function (mixed $value_1): Weight {
                 if (!is_array($value_1)) {
-                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value_1)));
+                    throw new MalformedDataException(
+                        sprintf('Array item must be object, got %s.', get_debug_type($value_1)),
+                    );
                 }
                 /** @var array<string, mixed> $value_1Typed */
                 $value_1Typed = $value_1;
@@ -170,18 +183,27 @@ final readonly class TrackShipmentDetail implements SelfNormalizingModel
         if (array_key_exists('contentPieceCount', $data) && $data['contentPieceCount'] !== null) {
             $contentPieceCountRaw = $data['contentPieceCount'];
             if (!is_string($contentPieceCountRaw)) {
-                throw new MalformedDataException(sprintf('Property "contentPieceCount" must be string, got %s.', get_debug_type($contentPieceCountRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "contentPieceCount" must be string, got %s.',
+                        get_debug_type($contentPieceCountRaw),
+                    ),
+                );
             }
             $contentPieceCount = Some::create($contentPieceCountRaw);
         }
         if (array_key_exists('splitShipments', $data) && $data['splitShipments'] !== null) {
             $splitShipmentsRaw = $data['splitShipments'];
             if (!(is_array($splitShipmentsRaw) && array_is_list($splitShipmentsRaw))) {
-                throw new MalformedDataException(sprintf('Property "splitShipments" must be list, got %s.', get_debug_type($splitShipmentsRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "splitShipments" must be list, got %s.', get_debug_type($splitShipmentsRaw)),
+                );
             }
             $splitShipments = Some::create(array_map(static function (mixed $value_2): TrackSplitShipment {
                 if (!is_array($value_2)) {
-                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value_2)));
+                    throw new MalformedDataException(
+                        sprintf('Array item must be object, got %s.', get_debug_type($value_2)),
+                    );
                 }
                 /** @var array<string, mixed> $value_2Typed */
                 $value_2Typed = $value_2;

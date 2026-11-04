@@ -111,7 +111,12 @@ final readonly class CustomDeliveryOption implements SelfNormalizingModel
         if (array_key_exists('requestedAppointmentDetail', $data) && $data['requestedAppointmentDetail'] !== null) {
             $requestedAppointmentDetailRaw = $data['requestedAppointmentDetail'];
             if (!is_array($requestedAppointmentDetailRaw)) {
-                throw new MalformedDataException(sprintf('Property "requestedAppointmentDetail" must be object, got %s.', get_debug_type($requestedAppointmentDetailRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "requestedAppointmentDetail" must be object, got %s.',
+                        get_debug_type($requestedAppointmentDetailRaw),
+                    ),
+                );
             }
             /** @var array<string, mixed> $requestedAppointmentDetailRawTyped */
             $requestedAppointmentDetailRawTyped = $requestedAppointmentDetailRaw;
@@ -122,21 +127,27 @@ final readonly class CustomDeliveryOption implements SelfNormalizingModel
         if (array_key_exists('description', $data) && $data['description'] !== null) {
             $descriptionRaw = $data['description'];
             if (!is_string($descriptionRaw)) {
-                throw new MalformedDataException(sprintf('Property "description" must be string, got %s.', get_debug_type($descriptionRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "description" must be string, got %s.', get_debug_type($descriptionRaw)),
+                );
             }
             $description = Some::create($descriptionRaw);
         }
         if (array_key_exists('type', $data) && $data['type'] !== null) {
             $typeRaw = $data['type'];
             if (!is_string($typeRaw)) {
-                throw new MalformedDataException(sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)),
+                );
             }
             $type = Some::create(CustomDeliveryOptionType::tryFrom($typeRaw) ?? UnknownEnumValue::of($typeRaw));
         }
         if (array_key_exists('status', $data) && $data['status'] !== null) {
             $statusRaw = $data['status'];
             if (!is_string($statusRaw)) {
-                throw new MalformedDataException(sprintf('Property "status" must be string, got %s.', get_debug_type($statusRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "status" must be string, got %s.', get_debug_type($statusRaw)),
+                );
             }
             $status = Some::create($statusRaw);
         }

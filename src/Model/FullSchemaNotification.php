@@ -146,21 +146,36 @@ final readonly class FullSchemaNotification implements SelfNormalizingModel
         if (array_key_exists('senderContactName', $data)) {
             $senderContactNameRaw = $data['senderContactName'];
             if (!is_string($senderContactNameRaw)) {
-                throw new MalformedDataException(sprintf('Property "senderContactName" must be string, got %s.', get_debug_type($senderContactNameRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "senderContactName" must be string, got %s.',
+                        get_debug_type($senderContactNameRaw),
+                    ),
+                );
             }
             $senderContactName = $senderContactNameRaw;
         }
         if (array_key_exists('senderEMailAddress', $data)) {
             $senderEMailAddressRaw = $data['senderEMailAddress'];
             if (!is_string($senderEMailAddressRaw)) {
-                throw new MalformedDataException(sprintf('Property "senderEMailAddress" must be string, got %s.', get_debug_type($senderEMailAddressRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "senderEMailAddress" must be string, got %s.',
+                        get_debug_type($senderEMailAddressRaw),
+                    ),
+                );
             }
             $senderEMailAddress = $senderEMailAddressRaw;
         }
         if (array_key_exists('trackingEventNotificationDetail', $data)) {
             $trackingEventNotificationDetailRaw = $data['trackingEventNotificationDetail'];
             if (!is_array($trackingEventNotificationDetailRaw)) {
-                throw new MalformedDataException(sprintf('Property "trackingEventNotificationDetail" must be object, got %s.', get_debug_type($trackingEventNotificationDetailRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "trackingEventNotificationDetail" must be object, got %s.',
+                        get_debug_type($trackingEventNotificationDetailRaw),
+                    ),
+                );
             }
             /** @var non-empty-array<string, mixed> $trackingEventNotificationDetailRawTyped */
             $trackingEventNotificationDetailRawTyped = $trackingEventNotificationDetailRaw;
@@ -171,7 +186,12 @@ final readonly class FullSchemaNotification implements SelfNormalizingModel
         if (array_key_exists('trackingNumberInfo', $data)) {
             $trackingNumberInfoRaw = $data['trackingNumberInfo'];
             if (!is_array($trackingNumberInfoRaw)) {
-                throw new MalformedDataException(sprintf('Property "trackingNumberInfo" must be object, got %s.', get_debug_type($trackingNumberInfoRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "trackingNumberInfo" must be object, got %s.',
+                        get_debug_type($trackingNumberInfoRaw),
+                    ),
+                );
             }
             /** @var non-empty-array<string, mixed> $trackingNumberInfoRawTyped */
             $trackingNumberInfoRawTyped = $trackingNumberInfoRaw;
@@ -180,14 +200,18 @@ final readonly class FullSchemaNotification implements SelfNormalizingModel
         if (array_key_exists('shipDateBegin', $data) && $data['shipDateBegin'] !== null) {
             $shipDateBeginRaw = $data['shipDateBegin'];
             if (!is_string($shipDateBeginRaw)) {
-                throw new MalformedDataException(sprintf('Property "shipDateBegin" must be string, got %s.', get_debug_type($shipDateBeginRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "shipDateBegin" must be string, got %s.', get_debug_type($shipDateBeginRaw)),
+                );
             }
             $shipDateBegin = Some::create($shipDateBeginRaw);
         }
         if (array_key_exists('shipDateEnd', $data) && $data['shipDateEnd'] !== null) {
             $shipDateEndRaw = $data['shipDateEnd'];
             if (!is_string($shipDateEndRaw)) {
-                throw new MalformedDataException(sprintf('Property "shipDateEnd" must be string, got %s.', get_debug_type($shipDateEndRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "shipDateEnd" must be string, got %s.', get_debug_type($shipDateEndRaw)),
+                );
             }
             $shipDateEnd = Some::create($shipDateEndRaw);
         }
@@ -209,7 +233,9 @@ final readonly class FullSchemaNotification implements SelfNormalizingModel
             throw new MalformedDataException('Required property "senderEMailAddress" is missing from the document.');
         }
         if (!$trackingEventNotificationDetail instanceof TrackingEventNotificationDetail) {
-            throw new MalformedDataException('Required property "trackingEventNotificationDetail" is missing from the document.');
+            throw new MalformedDataException(
+                'Required property "trackingEventNotificationDetail" is missing from the document.',
+            );
         }
         if (!$trackingNumberInfo instanceof TrackingNumberInfo) {
             throw new MalformedDataException('Required property "trackingNumberInfo" is missing from the document.');

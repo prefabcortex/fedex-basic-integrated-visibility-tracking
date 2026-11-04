@@ -86,7 +86,12 @@ final readonly class FullSchemaTrackingReferences implements SelfNormalizingMode
         if (array_key_exists('referencesInformation', $data)) {
             $referencesInformationRaw = $data['referencesInformation'];
             if (!is_array($referencesInformationRaw)) {
-                throw new MalformedDataException(sprintf('Property "referencesInformation" must be object, got %s.', get_debug_type($referencesInformationRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "referencesInformation" must be object, got %s.',
+                        get_debug_type($referencesInformationRaw),
+                    ),
+                );
             }
             /** @var non-empty-array<string, mixed> $referencesInformationRawTyped */
             $referencesInformationRawTyped = $referencesInformationRaw;
@@ -95,7 +100,12 @@ final readonly class FullSchemaTrackingReferences implements SelfNormalizingMode
         if (array_key_exists('includeDetailedScans', $data) && $data['includeDetailedScans'] !== null) {
             $includeDetailedScansRaw = $data['includeDetailedScans'];
             if (!is_bool($includeDetailedScansRaw)) {
-                throw new MalformedDataException(sprintf('Property "includeDetailedScans" must be bool, got %s.', get_debug_type($includeDetailedScansRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "includeDetailedScans" must be bool, got %s.',
+                        get_debug_type($includeDetailedScansRaw),
+                    ),
+                );
             }
             $includeDetailedScans = Some::create($includeDetailedScansRaw);
         }

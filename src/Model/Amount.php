@@ -83,14 +83,18 @@ final readonly class Amount implements SelfNormalizingModel
         if (array_key_exists('currency', $data) && $data['currency'] !== null) {
             $currencyRaw = $data['currency'];
             if (!is_string($currencyRaw)) {
-                throw new MalformedDataException(sprintf('Property "currency" must be string, got %s.', get_debug_type($currencyRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "currency" must be string, got %s.', get_debug_type($currencyRaw)),
+                );
             }
             $currency = Some::create($currencyRaw);
         }
         if (array_key_exists('value', $data) && $data['value'] !== null) {
             $valueRaw = $data['value'];
             if (!(is_float($valueRaw) || is_int($valueRaw))) {
-                throw new MalformedDataException(sprintf('Property "value" must be number, got %s.', get_debug_type($valueRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "value" must be number, got %s.', get_debug_type($valueRaw)),
+                );
             }
             $value = Some::create((float) $valueRaw);
         }

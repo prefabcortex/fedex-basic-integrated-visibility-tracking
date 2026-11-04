@@ -201,28 +201,45 @@ final readonly class PackageDetail implements SelfNormalizingModel
         if (array_key_exists('physicalPackagingType', $data) && $data['physicalPackagingType'] !== null) {
             $physicalPackagingTypeRaw = $data['physicalPackagingType'];
             if (!is_string($physicalPackagingTypeRaw)) {
-                throw new MalformedDataException(sprintf('Property "physicalPackagingType" must be string, got %s.', get_debug_type($physicalPackagingTypeRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "physicalPackagingType" must be string, got %s.',
+                        get_debug_type($physicalPackagingTypeRaw),
+                    ),
+                );
             }
             $physicalPackagingType = Some::create($physicalPackagingTypeRaw);
         }
         if (array_key_exists('sequenceNumber', $data) && $data['sequenceNumber'] !== null) {
             $sequenceNumberRaw = $data['sequenceNumber'];
             if (!is_string($sequenceNumberRaw)) {
-                throw new MalformedDataException(sprintf('Property "sequenceNumber" must be string, got %s.', get_debug_type($sequenceNumberRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "sequenceNumber" must be string, got %s.', get_debug_type($sequenceNumberRaw)),
+                );
             }
             $sequenceNumber = Some::create($sequenceNumberRaw);
         }
         if (array_key_exists('undeliveredCount', $data) && $data['undeliveredCount'] !== null) {
             $undeliveredCountRaw = $data['undeliveredCount'];
             if (!is_string($undeliveredCountRaw)) {
-                throw new MalformedDataException(sprintf('Property "undeliveredCount" must be string, got %s.', get_debug_type($undeliveredCountRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "undeliveredCount" must be string, got %s.',
+                        get_debug_type($undeliveredCountRaw),
+                    ),
+                );
             }
             $undeliveredCount = Some::create($undeliveredCountRaw);
         }
         if (array_key_exists('packagingDescription', $data) && $data['packagingDescription'] !== null) {
             $packagingDescriptionRaw = $data['packagingDescription'];
             if (!is_array($packagingDescriptionRaw)) {
-                throw new MalformedDataException(sprintf('Property "packagingDescription" must be object, got %s.', get_debug_type($packagingDescriptionRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "packagingDescription" must be object, got %s.',
+                        get_debug_type($packagingDescriptionRaw),
+                    ),
+                );
             }
             /** @var array<string, mixed> $packagingDescriptionRawTyped */
             $packagingDescriptionRawTyped = $packagingDescriptionRaw;
@@ -231,14 +248,21 @@ final readonly class PackageDetail implements SelfNormalizingModel
         if (array_key_exists('count', $data) && $data['count'] !== null) {
             $countRaw = $data['count'];
             if (!is_string($countRaw)) {
-                throw new MalformedDataException(sprintf('Property "count" must be string, got %s.', get_debug_type($countRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "count" must be string, got %s.', get_debug_type($countRaw)),
+                );
             }
             $count = Some::create($countRaw);
         }
         if (array_key_exists('weightAndDimensions', $data) && $data['weightAndDimensions'] !== null) {
             $weightAndDimensionsRaw = $data['weightAndDimensions'];
             if (!is_array($weightAndDimensionsRaw)) {
-                throw new MalformedDataException(sprintf('Property "weightAndDimensions" must be object, got %s.', get_debug_type($weightAndDimensionsRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "weightAndDimensions" must be object, got %s.',
+                        get_debug_type($weightAndDimensionsRaw),
+                    ),
+                );
             }
             /** @var array<string, mixed> $weightAndDimensionsRawTyped */
             $weightAndDimensionsRawTyped = $weightAndDimensionsRaw;
@@ -247,11 +271,15 @@ final readonly class PackageDetail implements SelfNormalizingModel
         if (array_key_exists('packageContent', $data) && $data['packageContent'] !== null) {
             $packageContentRaw = $data['packageContent'];
             if (!(is_array($packageContentRaw) && array_is_list($packageContentRaw))) {
-                throw new MalformedDataException(sprintf('Property "packageContent" must be list, got %s.', get_debug_type($packageContentRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "packageContent" must be list, got %s.', get_debug_type($packageContentRaw)),
+                );
             }
             $packageContent = Some::create(array_map(static function (mixed $value): string {
                 if (!is_string($value)) {
-                    throw new MalformedDataException(sprintf('Array item must be string, got %s.', get_debug_type($value)));
+                    throw new MalformedDataException(
+                        sprintf('Array item must be string, got %s.', get_debug_type($value)),
+                    );
                 }
 
                 return $value;
@@ -260,14 +288,21 @@ final readonly class PackageDetail implements SelfNormalizingModel
         if (array_key_exists('contentPieceCount', $data) && $data['contentPieceCount'] !== null) {
             $contentPieceCountRaw = $data['contentPieceCount'];
             if (!is_string($contentPieceCountRaw)) {
-                throw new MalformedDataException(sprintf('Property "contentPieceCount" must be string, got %s.', get_debug_type($contentPieceCountRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "contentPieceCount" must be string, got %s.',
+                        get_debug_type($contentPieceCountRaw),
+                    ),
+                );
             }
             $contentPieceCount = Some::create($contentPieceCountRaw);
         }
         if (array_key_exists('declaredValue', $data) && $data['declaredValue'] !== null) {
             $declaredValueRaw = $data['declaredValue'];
             if (!is_array($declaredValueRaw)) {
-                throw new MalformedDataException(sprintf('Property "declaredValue" must be object, got %s.', get_debug_type($declaredValueRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "declaredValue" must be object, got %s.', get_debug_type($declaredValueRaw)),
+                );
             }
             /** @var array<string, mixed> $declaredValueRawTyped */
             $declaredValueRawTyped = $declaredValueRaw;

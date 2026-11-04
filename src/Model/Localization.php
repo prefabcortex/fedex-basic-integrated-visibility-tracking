@@ -83,14 +83,18 @@ final readonly class Localization implements SelfNormalizingModel
         if (array_key_exists('languageCode', $data)) {
             $languageCodeRaw = $data['languageCode'];
             if (!is_string($languageCodeRaw)) {
-                throw new MalformedDataException(sprintf('Property "languageCode" must be string, got %s.', get_debug_type($languageCodeRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "languageCode" must be string, got %s.', get_debug_type($languageCodeRaw)),
+                );
             }
             $languageCode = $languageCodeRaw;
         }
         if (array_key_exists('localeCode', $data) && $data['localeCode'] !== null) {
             $localeCodeRaw = $data['localeCode'];
             if (!is_string($localeCodeRaw)) {
-                throw new MalformedDataException(sprintf('Property "localeCode" must be string, got %s.', get_debug_type($localeCodeRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "localeCode" must be string, got %s.', get_debug_type($localeCodeRaw)),
+                );
             }
             $localeCode = Some::create($localeCodeRaw);
         }

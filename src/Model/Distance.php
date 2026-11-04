@@ -79,14 +79,18 @@ final readonly class Distance implements SelfNormalizingModel
         if (array_key_exists('units', $data) && $data['units'] !== null) {
             $unitsRaw = $data['units'];
             if (!is_string($unitsRaw)) {
-                throw new MalformedDataException(sprintf('Property "units" must be string, got %s.', get_debug_type($unitsRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "units" must be string, got %s.', get_debug_type($unitsRaw)),
+                );
             }
             $units = Some::create(DistanceUnits::tryFrom($unitsRaw) ?? UnknownEnumValue::of($unitsRaw));
         }
         if (array_key_exists('value', $data) && $data['value'] !== null) {
             $valueRaw = $data['value'];
             if (!(is_float($valueRaw) || is_int($valueRaw))) {
-                throw new MalformedDataException(sprintf('Property "value" must be number, got %s.', get_debug_type($valueRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "value" must be number, got %s.', get_debug_type($valueRaw)),
+                );
             }
             $value = Some::create((float) $valueRaw);
         }

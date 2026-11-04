@@ -93,21 +93,30 @@ final readonly class TrkcResponseVOSPOD implements SelfNormalizingModel
         if (array_key_exists('transactionId', $data) && $data['transactionId'] !== null) {
             $transactionIdRaw = $data['transactionId'];
             if (!is_string($transactionIdRaw)) {
-                throw new MalformedDataException(sprintf('Property "transactionId" must be string, got %s.', get_debug_type($transactionIdRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "transactionId" must be string, got %s.', get_debug_type($transactionIdRaw)),
+                );
             }
             $transactionId = Some::create($transactionIdRaw);
         }
         if (array_key_exists('customerTransactionId', $data) && $data['customerTransactionId'] !== null) {
             $customerTransactionIdRaw = $data['customerTransactionId'];
             if (!is_string($customerTransactionIdRaw)) {
-                throw new MalformedDataException(sprintf('Property "customerTransactionId" must be string, got %s.', get_debug_type($customerTransactionIdRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "customerTransactionId" must be string, got %s.',
+                        get_debug_type($customerTransactionIdRaw),
+                    ),
+                );
             }
             $customerTransactionId = Some::create($customerTransactionIdRaw);
         }
         if (array_key_exists('output', $data) && $data['output'] !== null) {
             $outputRaw = $data['output'];
             if (!is_array($outputRaw)) {
-                throw new MalformedDataException(sprintf('Property "output" must be object, got %s.', get_debug_type($outputRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "output" must be object, got %s.', get_debug_type($outputRaw)),
+                );
             }
             /** @var array<string, mixed> $outputRawTyped */
             $outputRawTyped = $outputRaw;

@@ -67,10 +67,9 @@ final readonly class ProblemDetails
             new self(
                 self::text($document, 'type')->getOrElse('about:blank'),
                 self::text($document, 'title'),
-                array_key_exists(
-                    'status',
-                    $document,
-                ) && is_int($document['status']) ? Some::create($document['status']) : None::create(),
+                array_key_exists('status', $document) && is_int($document['status'])
+                    ? Some::create($document['status'])
+                    : None::create(),
                 self::text($document, 'detail'),
                 self::text($document, 'instance'),
             ),
@@ -84,9 +83,8 @@ final readonly class ProblemDetails
      */
     private static function text(array $document, string $member): Option
     {
-        return array_key_exists(
-            $member,
-            $document,
-        ) && is_string($document[$member]) ? Some::create($document[$member]) : None::create();
+        return array_key_exists($member, $document) && is_string($document[$member])
+            ? Some::create($document[$member])
+            : None::create();
     }
 }

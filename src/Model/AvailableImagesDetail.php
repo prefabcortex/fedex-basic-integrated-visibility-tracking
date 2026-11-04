@@ -78,14 +78,18 @@ final readonly class AvailableImagesDetail implements SelfNormalizingModel
         if (array_key_exists('size', $data) && $data['size'] !== null) {
             $sizeRaw = $data['size'];
             if (!is_string($sizeRaw)) {
-                throw new MalformedDataException(sprintf('Property "size" must be string, got %s.', get_debug_type($sizeRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "size" must be string, got %s.', get_debug_type($sizeRaw)),
+                );
             }
             $size = Some::create(AvailableImagesDetailSize::tryFrom($sizeRaw) ?? UnknownEnumValue::of($sizeRaw));
         }
         if (array_key_exists('type', $data) && $data['type'] !== null) {
             $typeRaw = $data['type'];
             if (!is_string($typeRaw)) {
-                throw new MalformedDataException(sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)),
+                );
             }
             $type = Some::create(AvailableImagesDetailType::tryFrom($typeRaw) ?? UnknownEnumValue::of($typeRaw));
         }

@@ -158,6 +158,7 @@ final readonly class TrackByReferences implements Operation
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVOConstraint::constraints());
             }
+
             throw new TrackByReferencesBadRequestException(ErrorResponseVO::fromArray($typedData), $response, $body);
         }
         if (401 === $status && $contentType->is('application/json')) {
@@ -165,13 +166,19 @@ final readonly class TrackByReferences implements Operation
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO401Constraint::constraints());
             }
-            throw new TrackByReferencesUnauthorizedException(ErrorResponseVO401::fromArray($typedData), $response, $body);
+
+            throw new TrackByReferencesUnauthorizedException(
+                ErrorResponseVO401::fromArray($typedData),
+                $response,
+                $body,
+            );
         }
         if (403 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO403Constraint::constraints());
             }
+
             throw new TrackByReferencesForbiddenException(ErrorResponseVO403::fromArray($typedData), $response, $body);
         }
         if (404 === $status && $contentType->is('application/json')) {
@@ -179,6 +186,7 @@ final readonly class TrackByReferences implements Operation
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO404Constraint::constraints());
             }
+
             throw new TrackByReferencesNotFoundException(ErrorResponseVO404::fromArray($typedData), $response, $body);
         }
         if (500 === $status && $contentType->is('application/json')) {
@@ -186,18 +194,29 @@ final readonly class TrackByReferences implements Operation
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO500Constraint::constraints());
             }
-            throw new TrackByReferencesInternalServerErrorException(ErrorResponseVO500::fromArray($typedData), $response, $body);
+
+            throw new TrackByReferencesInternalServerErrorException(
+                ErrorResponseVO500::fromArray($typedData),
+                $response,
+                $body,
+            );
         }
         if (503 === $status && $contentType->is('application/json')) {
             $typedData = JsonBody::toArray($body);
             if (ValidationMode::Strict === $validation) {
                 $this->validate($typedData, ErrorResponseVO503Constraint::constraints());
             }
-            throw new TrackByReferencesServiceUnavailableException(ErrorResponseVO503::fromArray($typedData), $response, $body);
+
+            throw new TrackByReferencesServiceUnavailableException(
+                ErrorResponseVO503::fromArray($typedData),
+                $response,
+                $body,
+            );
         }
         if (in_array($status, [200, 400, 401, 403, 404, 500, 503], true)) {
             throw new UnexpectedContentTypeException($response, $body);
         }
+
         throw UnexpectedStatusCodeException::of($response, $body);
     }
 
@@ -226,11 +245,13 @@ final readonly class TrackByReferences implements Operation
             if ($response->getStatusCode() >= 400) {
                 throw UnexpectedStatusCodeException::ofUnreadableBody($response, $body, $exception);
             }
+
             throw new ResponseValidationException($exception, $response, $body);
         } catch (MalformedDataException $exception) {
             if ($response->getStatusCode() >= 400) {
                 throw UnexpectedStatusCodeException::ofUnreadableBody($response, $body, $exception);
             }
+
             throw new MalformedResponseException($exception, $response, $body);
         }
     }

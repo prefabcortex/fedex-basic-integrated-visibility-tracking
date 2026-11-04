@@ -89,14 +89,18 @@ final readonly class TrackDocumentDetail implements SelfNormalizingModel
         if (array_key_exists('documentType', $data)) {
             $documentTypeRaw = $data['documentType'];
             if (!is_string($documentTypeRaw)) {
-                throw new MalformedDataException(sprintf('Property "documentType" must be string, got %s.', get_debug_type($documentTypeRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "documentType" must be string, got %s.', get_debug_type($documentTypeRaw)),
+                );
             }
             $documentType = $documentTypeRaw;
         }
         if (array_key_exists('documentFormat', $data) && $data['documentFormat'] !== null) {
             $documentFormatRaw = $data['documentFormat'];
             if (!is_string($documentFormatRaw)) {
-                throw new MalformedDataException(sprintf('Property "documentFormat" must be string, got %s.', get_debug_type($documentFormatRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "documentFormat" must be string, got %s.', get_debug_type($documentFormatRaw)),
+                );
             }
             $documentFormat = Some::create($documentFormatRaw);
         }

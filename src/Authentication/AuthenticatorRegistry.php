@@ -64,9 +64,18 @@ final readonly class AuthenticatorRegistry
         $declared = [...$requiredSchemes, ...$schemesRequiredNowhere];
         foreach ($authenticators as $authenticator) {
             $scheme = $authenticator->getSecuritySchemeName();
-            if (!in_array($scheme, $declared, true)) {
-                throw new UnsupportedValueException(sprintf('%s signs for the security scheme "%s", which the description of this API does not declare (%s), so no request would ever apply it. To sign every request your own way, pass an HTTP client that does so to ClientConfig::withHttpClient().', $authenticator::class, $scheme, [] === $declared ? 'it declares none' : 'it declares ' . implode(', ', array_map(static fn (string $name): string => '"' . $name . '"', $declared))));
+            if (in_array($scheme, $declared, true)) {
+                continue;
             }
+            $quoted = array_map(static fn (string $name): string => '"' . $name . '"', $declared);
+            $declaredSchemes = [] === $quoted ? 'no security scheme' : 'only ' . implode(', ', $quoted);
+            $template = <<<'TEXT'
+                %s signs for the security scheme "%s", but this API declares %s.
+                To sign requests in a way of your own, pass a client that does so to ClientConfig::withHttpClient().
+                TEXT;
+            $message = sprintf($template, $authenticator::class, $scheme, $declaredSchemes);
+
+            throw new UnsupportedValueException($message);
         }
     }
 

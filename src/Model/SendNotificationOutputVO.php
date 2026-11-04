@@ -113,7 +113,12 @@ final readonly class SendNotificationOutputVO implements SelfNormalizingModel
         if (array_key_exists('TrackingNumberInfo', $data) && $data['TrackingNumberInfo'] !== null) {
             $trackingNumberInfoRaw = $data['TrackingNumberInfo'];
             if (!is_array($trackingNumberInfoRaw)) {
-                throw new MalformedDataException(sprintf('Property "TrackingNumberInfo" must be object, got %s.', get_debug_type($trackingNumberInfoRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "TrackingNumberInfo" must be object, got %s.',
+                        get_debug_type($trackingNumberInfoRaw),
+                    ),
+                );
             }
             /** @var non-empty-array<string, mixed> $trackingNumberInfoRawTyped */
             $trackingNumberInfoRawTyped = $trackingNumberInfoRaw;
@@ -122,7 +127,12 @@ final readonly class SendNotificationOutputVO implements SelfNormalizingModel
         if (array_key_exists('destinationAddress', $data) && $data['destinationAddress'] !== null) {
             $destinationAddressRaw = $data['destinationAddress'];
             if (!is_array($destinationAddressRaw)) {
-                throw new MalformedDataException(sprintf('Property "destinationAddress" must be object, got %s.', get_debug_type($destinationAddressRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "destinationAddress" must be object, got %s.',
+                        get_debug_type($destinationAddressRaw),
+                    ),
+                );
             }
             /** @var non-empty-array<string, mixed> $destinationAddressRawTyped */
             $destinationAddressRawTyped = $destinationAddressRaw;
@@ -131,16 +141,22 @@ final readonly class SendNotificationOutputVO implements SelfNormalizingModel
         if (array_key_exists('recipientDetails', $data) && $data['recipientDetails'] !== null) {
             $recipientDetailsRaw = $data['recipientDetails'];
             if (!(is_array($recipientDetailsRaw) && array_is_list($recipientDetailsRaw))) {
-                throw new MalformedDataException(sprintf('Property "recipientDetails" must be list, got %s.', get_debug_type($recipientDetailsRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "recipientDetails" must be list, got %s.', get_debug_type($recipientDetailsRaw)),
+                );
             }
             $recipientDetails = Some::create(array_map(static function (mixed $value): array {
                 if (!(is_array($value) && array_is_list($value))) {
-                    throw new MalformedDataException(sprintf('Array item must be list, got %s.', get_debug_type($value)));
+                    throw new MalformedDataException(
+                        sprintf('Array item must be list, got %s.', get_debug_type($value)),
+                    );
                 }
 
                 return array_map(static function (mixed $value_1): string {
                     if (!is_string($value_1)) {
-                        throw new MalformedDataException(sprintf('Array item must be string, got %s.', get_debug_type($value_1)));
+                        throw new MalformedDataException(
+                            sprintf('Array item must be string, got %s.', get_debug_type($value_1)),
+                        );
                     }
 
                     return $value_1;
@@ -150,11 +166,15 @@ final readonly class SendNotificationOutputVO implements SelfNormalizingModel
         if (array_key_exists('alerts', $data) && $data['alerts'] !== null) {
             $alertsRaw = $data['alerts'];
             if (!(is_array($alertsRaw) && array_is_list($alertsRaw))) {
-                throw new MalformedDataException(sprintf('Property "alerts" must be list, got %s.', get_debug_type($alertsRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "alerts" must be list, got %s.', get_debug_type($alertsRaw)),
+                );
             }
             $alerts = Some::create(array_map(static function (mixed $value_2): Alert {
                 if (!is_array($value_2)) {
-                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value_2)));
+                    throw new MalformedDataException(
+                        sprintf('Array item must be object, got %s.', get_debug_type($value_2)),
+                    );
                 }
                 /** @var array<string, mixed> $value_2Typed */
                 $value_2Typed = $value_2;

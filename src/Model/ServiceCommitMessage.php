@@ -79,14 +79,18 @@ final readonly class ServiceCommitMessage implements SelfNormalizingModel
         if (array_key_exists('message', $data) && $data['message'] !== null) {
             $messageRaw = $data['message'];
             if (!is_string($messageRaw)) {
-                throw new MalformedDataException(sprintf('Property "message" must be string, got %s.', get_debug_type($messageRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "message" must be string, got %s.', get_debug_type($messageRaw)),
+                );
             }
             $message = Some::create($messageRaw);
         }
         if (array_key_exists('type', $data) && $data['type'] !== null) {
             $typeRaw = $data['type'];
             if (!is_string($typeRaw)) {
-                throw new MalformedDataException(sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)),
+                );
             }
             $type = Some::create(ServiceCommitMessageType::tryFrom($typeRaw) ?? UnknownEnumValue::of($typeRaw));
         }

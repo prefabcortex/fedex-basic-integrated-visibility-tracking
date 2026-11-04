@@ -117,28 +117,36 @@ final readonly class Dimensions implements SelfNormalizingModel
         if (array_key_exists('length', $data) && $data['length'] !== null) {
             $lengthRaw = $data['length'];
             if (!is_int($lengthRaw)) {
-                throw new MalformedDataException(sprintf('Property "length" must be int, got %s.', get_debug_type($lengthRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "length" must be int, got %s.', get_debug_type($lengthRaw)),
+                );
             }
             $length = Some::create($lengthRaw);
         }
         if (array_key_exists('width', $data) && $data['width'] !== null) {
             $widthRaw = $data['width'];
             if (!is_int($widthRaw)) {
-                throw new MalformedDataException(sprintf('Property "width" must be int, got %s.', get_debug_type($widthRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "width" must be int, got %s.', get_debug_type($widthRaw)),
+                );
             }
             $width = Some::create($widthRaw);
         }
         if (array_key_exists('height', $data) && $data['height'] !== null) {
             $heightRaw = $data['height'];
             if (!is_int($heightRaw)) {
-                throw new MalformedDataException(sprintf('Property "height" must be int, got %s.', get_debug_type($heightRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "height" must be int, got %s.', get_debug_type($heightRaw)),
+                );
             }
             $height = Some::create($heightRaw);
         }
         if (array_key_exists('units', $data) && $data['units'] !== null) {
             $unitsRaw = $data['units'];
             if (!is_string($unitsRaw)) {
-                throw new MalformedDataException(sprintf('Property "units" must be string, got %s.', get_debug_type($unitsRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "units" must be string, got %s.', get_debug_type($unitsRaw)),
+                );
             }
             $units = Some::create(DimensionsUnits::tryFrom($unitsRaw) ?? UnknownEnumValue::of($unitsRaw));
         }

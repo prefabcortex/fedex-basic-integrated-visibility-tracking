@@ -83,7 +83,9 @@ final readonly class TrackingNotificationDetail implements SelfNormalizingModel
         if (array_key_exists('localization', $data)) {
             $localizationRaw = $data['localization'];
             if (!is_array($localizationRaw)) {
-                throw new MalformedDataException(sprintf('Property "localization" must be object, got %s.', get_debug_type($localizationRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "localization" must be object, got %s.', get_debug_type($localizationRaw)),
+                );
             }
             /** @var non-empty-array<string, mixed> $localizationRawTyped */
             $localizationRawTyped = $localizationRaw;
@@ -92,7 +94,9 @@ final readonly class TrackingNotificationDetail implements SelfNormalizingModel
         if (array_key_exists('emailDetail', $data)) {
             $emailDetailRaw = $data['emailDetail'];
             if (!is_array($emailDetailRaw)) {
-                throw new MalformedDataException(sprintf('Property "emailDetail" must be object, got %s.', get_debug_type($emailDetailRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "emailDetail" must be object, got %s.', get_debug_type($emailDetailRaw)),
+                );
             }
             /** @var non-empty-array<string, mixed> $emailDetailRawTyped */
             $emailDetailRawTyped = $emailDetailRaw;
@@ -101,7 +105,12 @@ final readonly class TrackingNotificationDetail implements SelfNormalizingModel
         if (array_key_exists('notificationType', $data)) {
             $notificationTypeRaw = $data['notificationType'];
             if (!is_string($notificationTypeRaw)) {
-                throw new MalformedDataException(sprintf('Property "notificationType" must be string, got %s.', get_debug_type($notificationTypeRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "notificationType" must be string, got %s.',
+                        get_debug_type($notificationTypeRaw),
+                    ),
+                );
             }
             $notificationType = $notificationTypeRaw;
         }

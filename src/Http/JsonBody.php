@@ -410,7 +410,11 @@ final class JsonBody
             // Positional, as everywhere else here: named arguments are out project-wide.
             return json_encode($value, JSON_THROW_ON_ERROR);
         } catch (JsonException $exception) {
-            throw new MalformedDataException(sprintf('The request body cannot be written as JSON: %s.', $exception->getMessage()), 0, $exception);
+            throw new MalformedDataException(
+                sprintf('The request body cannot be written as JSON: %s.', $exception->getMessage()),
+                0,
+                $exception,
+            );
         }
     }
 
@@ -433,7 +437,16 @@ final class JsonBody
             // packages inherit that rule with the file. 512 is json_decode()'s own default depth.
             $decoded = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $exception) {
-            throw new MalformedDataException(sprintf('Expected %s in the response body, but it is not valid JSON (%s): %s', $expected, $exception->getMessage(), self::excerpt($json)), 0, $exception);
+            throw new MalformedDataException(
+                sprintf(
+                    'Expected %s in the response body, but it is not valid JSON (%s): %s',
+                    $expected,
+                    $exception->getMessage(),
+                    self::excerpt($json),
+                ),
+                0,
+                $exception,
+            );
         }
         if (null === $decoded) {
             throw self::mismatch($expected, null, $json);
@@ -490,7 +503,14 @@ final class JsonBody
     private static function caseOf(string $enum, string|int $value, string $json): BackedEnum
     {
         return $enum::tryFrom($value)
-            ?? throw new MalformedDataException(sprintf('Expected a case of %s in the response body, got %s: %s', $enum, is_string($value) ? '"' . $value . '"' : (string) $value, self::excerpt($json)));
+            ?? throw new MalformedDataException(
+                sprintf(
+                    'Expected a case of %s in the response body, got %s: %s',
+                    $enum,
+                    is_string($value) ? '"' . $value . '"' : (string) $value,
+                    self::excerpt($json),
+                ),
+            );
     }
 
     /**

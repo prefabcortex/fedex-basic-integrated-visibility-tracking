@@ -57,7 +57,9 @@ final class UriReference
     {
         $b = self::components($base);
         if (!$b['hasScheme']) {
-            throw new UnsupportedValueException(sprintf('A relative reference needs an absolute base URI, got "%s".', $base));
+            throw new UnsupportedValueException(
+                sprintf('A relative reference needs an absolute base URI, got "%s".', $base),
+            );
         }
         $r = self::components($reference);
         $target = $r;
@@ -85,12 +87,9 @@ final class UriReference
 
             return self::recompose($target);
         }
-        $target['path'] = str_starts_with(
-            $r['path'],
-            '/',
-        ) ? self::removeDotSegments($r['path']) : self::removeDotSegments(
-            self::merge($b['hasAuthority'], $b['path'], $r['path']),
-        );
+        $target['path'] = str_starts_with($r['path'], '/')
+            ? self::removeDotSegments($r['path'])
+            : self::removeDotSegments(self::merge($b['hasAuthority'], $b['path'], $r['path']));
 
         return self::recompose($target);
     }
@@ -179,6 +178,11 @@ final class UriReference
      */
     private static function recompose(array $uri): string
     {
-        return ($uri['hasScheme'] ? $uri['scheme'] . ':' : '') . ($uri['hasAuthority'] ? '//' . $uri['authority'] : '') . $uri['path'] . ($uri['hasQuery'] ? '?' . $uri['query'] : '') . ($uri['hasFragment'] ? '#' . $uri['fragment'] : '');
+        $scheme = $uri['hasScheme'] ? $uri['scheme'] . ':' : '';
+        $authority = $uri['hasAuthority'] ? '//' . $uri['authority'] : '';
+        $query = $uri['hasQuery'] ? '?' . $uri['query'] : '';
+        $fragment = $uri['hasFragment'] ? '#' . $uri['fragment'] : '';
+
+        return $scheme . $authority . $uri['path'] . $query . $fragment;
     }
 }

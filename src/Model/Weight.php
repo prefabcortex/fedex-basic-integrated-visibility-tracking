@@ -77,14 +77,18 @@ final readonly class Weight implements SelfNormalizingModel
         if (array_key_exists('unit', $data) && $data['unit'] !== null) {
             $unitRaw = $data['unit'];
             if (!is_string($unitRaw)) {
-                throw new MalformedDataException(sprintf('Property "unit" must be string, got %s.', get_debug_type($unitRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "unit" must be string, got %s.', get_debug_type($unitRaw)),
+                );
             }
             $unit = Some::create(WeightUnit::tryFrom($unitRaw) ?? UnknownEnumValue::of($unitRaw));
         }
         if (array_key_exists('value', $data) && $data['value'] !== null) {
             $valueRaw = $data['value'];
             if (!is_string($valueRaw)) {
-                throw new MalformedDataException(sprintf('Property "value" must be string, got %s.', get_debug_type($valueRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "value" must be string, got %s.', get_debug_type($valueRaw)),
+                );
             }
             $value = Some::create($valueRaw);
         }

@@ -205,56 +205,78 @@ final readonly class ReferenceInformation implements SelfNormalizingModel
         if (array_key_exists('carrierCode', $data) && $data['carrierCode'] !== null) {
             $carrierCodeRaw = $data['carrierCode'];
             if (!is_string($carrierCodeRaw)) {
-                throw new MalformedDataException(sprintf('Property "carrierCode" must be string, got %s.', get_debug_type($carrierCodeRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "carrierCode" must be string, got %s.', get_debug_type($carrierCodeRaw)),
+                );
             }
             $carrierCode = Some::create($carrierCodeRaw);
         }
         if (array_key_exists('type', $data) && $data['type'] !== null) {
             $typeRaw = $data['type'];
             if (!is_string($typeRaw)) {
-                throw new MalformedDataException(sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "type" must be string, got %s.', get_debug_type($typeRaw)),
+                );
             }
             $type = Some::create($typeRaw);
         }
         if (array_key_exists('value', $data)) {
             $valueRaw = $data['value'];
             if (!is_string($valueRaw)) {
-                throw new MalformedDataException(sprintf('Property "value" must be string, got %s.', get_debug_type($valueRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "value" must be string, got %s.', get_debug_type($valueRaw)),
+                );
             }
             $value = $valueRaw;
         }
         if (array_key_exists('accountNumber', $data) && $data['accountNumber'] !== null) {
             $accountNumberRaw = $data['accountNumber'];
             if (!is_string($accountNumberRaw)) {
-                throw new MalformedDataException(sprintf('Property "accountNumber" must be string, got %s.', get_debug_type($accountNumberRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "accountNumber" must be string, got %s.', get_debug_type($accountNumberRaw)),
+                );
             }
             $accountNumber = Some::create($accountNumberRaw);
         }
         if (array_key_exists('shipDateBegin', $data)) {
             $shipDateBeginRaw = $data['shipDateBegin'];
             if (!is_string($shipDateBeginRaw)) {
-                throw new MalformedDataException(sprintf('Property "shipDateBegin" must be string, got %s.', get_debug_type($shipDateBeginRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "shipDateBegin" must be string, got %s.', get_debug_type($shipDateBeginRaw)),
+                );
             }
             $shipDateBegin = $shipDateBeginRaw;
         }
         if (array_key_exists('shipDateEndDate', $data)) {
             $shipDateEndDateRaw = $data['shipDateEndDate'];
             if (!is_string($shipDateEndDateRaw)) {
-                throw new MalformedDataException(sprintf('Property "shipDateEndDate" must be string, got %s.', get_debug_type($shipDateEndDateRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "shipDateEndDate" must be string, got %s.', get_debug_type($shipDateEndDateRaw)),
+                );
             }
             $shipDateEndDate = $shipDateEndDateRaw;
         }
         if (array_key_exists('destinationCountryCode', $data) && $data['destinationCountryCode'] !== null) {
             $destinationCountryCodeRaw = $data['destinationCountryCode'];
             if (!is_string($destinationCountryCodeRaw)) {
-                throw new MalformedDataException(sprintf('Property "destinationCountryCode" must be string, got %s.', get_debug_type($destinationCountryCodeRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "destinationCountryCode" must be string, got %s.',
+                        get_debug_type($destinationCountryCodeRaw),
+                    ),
+                );
             }
             $destinationCountryCode = Some::create($destinationCountryCodeRaw);
         }
         if (array_key_exists('destinationPostalCode', $data) && $data['destinationPostalCode'] !== null) {
             $destinationPostalCodeRaw = $data['destinationPostalCode'];
             if (!is_string($destinationPostalCodeRaw)) {
-                throw new MalformedDataException(sprintf('Property "destinationPostalCode" must be string, got %s.', get_debug_type($destinationPostalCodeRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "destinationPostalCode" must be string, got %s.',
+                        get_debug_type($destinationPostalCodeRaw),
+                    ),
+                );
             }
             $destinationPostalCode = Some::create($destinationPostalCodeRaw);
         }

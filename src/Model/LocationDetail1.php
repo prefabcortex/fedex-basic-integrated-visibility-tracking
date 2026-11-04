@@ -97,14 +97,21 @@ final readonly class LocationDetail1 implements SelfNormalizingModel
         if (array_key_exists('locationId', $data) && $data['locationId'] !== null) {
             $locationIdRaw = $data['locationId'];
             if (!is_string($locationIdRaw)) {
-                throw new MalformedDataException(sprintf('Property "locationId" must be string, got %s.', get_debug_type($locationIdRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "locationId" must be string, got %s.', get_debug_type($locationIdRaw)),
+                );
             }
             $locationId = Some::create($locationIdRaw);
         }
         if (array_key_exists('locationContactAndAddress', $data)) {
             $locationContactAndAddressRaw = $data['locationContactAndAddress'];
             if (!is_array($locationContactAndAddressRaw)) {
-                throw new MalformedDataException(sprintf('Property "locationContactAndAddress" must be object, got %s.', get_debug_type($locationContactAndAddressRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "locationContactAndAddress" must be object, got %s.',
+                        get_debug_type($locationContactAndAddressRaw),
+                    ),
+                );
             }
             /** @var non-empty-array<string, mixed> $locationContactAndAddressRawTyped */
             $locationContactAndAddressRawTyped = $locationContactAndAddressRaw;
@@ -113,7 +120,9 @@ final readonly class LocationDetail1 implements SelfNormalizingModel
         if (array_key_exists('locationType', $data)) {
             $locationTypeRaw = $data['locationType'];
             if (!is_string($locationTypeRaw)) {
-                throw new MalformedDataException(sprintf('Property "locationType" must be string, got %s.', get_debug_type($locationTypeRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "locationType" must be string, got %s.', get_debug_type($locationTypeRaw)),
+                );
             }
             $locationType = LocationDetail1LocationType::tryFrom($locationTypeRaw)
                 ?? UnknownEnumValue::of($locationTypeRaw);
@@ -123,7 +132,9 @@ final readonly class LocationDetail1 implements SelfNormalizingModel
             ['locationId' => true, 'locationContactAndAddress' => true, 'locationType' => true],
         );
         if (!$locationContactAndAddress instanceof ContactAndAddress1) {
-            throw new MalformedDataException('Required property "locationContactAndAddress" is missing from the document.');
+            throw new MalformedDataException(
+                'Required property "locationContactAndAddress" is missing from the document.',
+            );
         }
         if ($locationType === null) {
             throw new MalformedDataException('Required property "locationType" is missing from the document.');

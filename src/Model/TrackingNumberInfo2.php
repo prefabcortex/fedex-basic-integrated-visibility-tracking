@@ -100,14 +100,18 @@ final readonly class TrackingNumberInfo2 implements SelfNormalizingModel
         if (array_key_exists('trackingNumber', $data)) {
             $trackingNumberRaw = $data['trackingNumber'];
             if (!is_string($trackingNumberRaw)) {
-                throw new MalformedDataException(sprintf('Property "trackingNumber" must be string, got %s.', get_debug_type($trackingNumberRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "trackingNumber" must be string, got %s.', get_debug_type($trackingNumberRaw)),
+                );
             }
             $trackingNumber = $trackingNumberRaw;
         }
         if (array_key_exists('carrierCode', $data) && $data['carrierCode'] !== null) {
             $carrierCodeRaw = $data['carrierCode'];
             if (!is_string($carrierCodeRaw)) {
-                throw new MalformedDataException(sprintf('Property "carrierCode" must be string, got %s.', get_debug_type($carrierCodeRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "carrierCode" must be string, got %s.', get_debug_type($carrierCodeRaw)),
+                );
             }
             $carrierCode = Some::create(
                 TrackingNumberInfo2CarrierCode::tryFrom($carrierCodeRaw) ?? UnknownEnumValue::of($carrierCodeRaw),
@@ -116,7 +120,12 @@ final readonly class TrackingNumberInfo2 implements SelfNormalizingModel
         if (array_key_exists('trackingNumberUniqueId', $data) && $data['trackingNumberUniqueId'] !== null) {
             $trackingNumberUniqueIdRaw = $data['trackingNumberUniqueId'];
             if (!is_string($trackingNumberUniqueIdRaw)) {
-                throw new MalformedDataException(sprintf('Property "trackingNumberUniqueId" must be string, got %s.', get_debug_type($trackingNumberUniqueIdRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "trackingNumberUniqueId" must be string, got %s.',
+                        get_debug_type($trackingNumberUniqueIdRaw),
+                    ),
+                );
             }
             $trackingNumberUniqueId = Some::create($trackingNumberUniqueIdRaw);
         }

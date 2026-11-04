@@ -91,21 +91,27 @@ final readonly class Alert implements SelfNormalizingModel
         if (array_key_exists('code', $data) && $data['code'] !== null) {
             $codeRaw = $data['code'];
             if (!is_string($codeRaw)) {
-                throw new MalformedDataException(sprintf('Property "code" must be string, got %s.', get_debug_type($codeRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "code" must be string, got %s.', get_debug_type($codeRaw)),
+                );
             }
             $code = Some::create($codeRaw);
         }
         if (array_key_exists('alertType', $data) && $data['alertType'] !== null) {
             $alertTypeRaw = $data['alertType'];
             if (!is_string($alertTypeRaw)) {
-                throw new MalformedDataException(sprintf('Property "alertType" must be string, got %s.', get_debug_type($alertTypeRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "alertType" must be string, got %s.', get_debug_type($alertTypeRaw)),
+                );
             }
             $alertType = Some::create(AlertAlertType::tryFrom($alertTypeRaw) ?? UnknownEnumValue::of($alertTypeRaw));
         }
         if (array_key_exists('message', $data) && $data['message'] !== null) {
             $messageRaw = $data['message'];
             if (!is_string($messageRaw)) {
-                throw new MalformedDataException(sprintf('Property "message" must be string, got %s.', get_debug_type($messageRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "message" must be string, got %s.', get_debug_type($messageRaw)),
+                );
             }
             $message = Some::create($messageRaw);
         }

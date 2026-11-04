@@ -98,18 +98,24 @@ final readonly class CXSError implements SelfNormalizingModel
         if (array_key_exists('code', $data) && $data['code'] !== null) {
             $codeRaw = $data['code'];
             if (!is_string($codeRaw)) {
-                throw new MalformedDataException(sprintf('Property "code" must be string, got %s.', get_debug_type($codeRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "code" must be string, got %s.', get_debug_type($codeRaw)),
+                );
             }
             $code = Some::create($codeRaw);
         }
         if (array_key_exists('parameterList', $data) && $data['parameterList'] !== null) {
             $parameterListRaw = $data['parameterList'];
             if (!(is_array($parameterListRaw) && array_is_list($parameterListRaw))) {
-                throw new MalformedDataException(sprintf('Property "parameterList" must be list, got %s.', get_debug_type($parameterListRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "parameterList" must be list, got %s.', get_debug_type($parameterListRaw)),
+                );
             }
             $parameterList = Some::create(array_map(static function (mixed $value): Parameter {
                 if (!is_array($value)) {
-                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value)));
+                    throw new MalformedDataException(
+                        sprintf('Array item must be object, got %s.', get_debug_type($value)),
+                    );
                 }
                 /** @var array<string, mixed> $valueTyped */
                 $valueTyped = $value;
@@ -120,7 +126,9 @@ final readonly class CXSError implements SelfNormalizingModel
         if (array_key_exists('message', $data) && $data['message'] !== null) {
             $messageRaw = $data['message'];
             if (!is_string($messageRaw)) {
-                throw new MalformedDataException(sprintf('Property "message" must be string, got %s.', get_debug_type($messageRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "message" must be string, got %s.', get_debug_type($messageRaw)),
+                );
             }
             $message = Some::create($messageRaw);
         }

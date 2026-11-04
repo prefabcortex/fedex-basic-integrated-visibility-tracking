@@ -112,28 +112,39 @@ final readonly class TrackSplitShipment implements SelfNormalizingModel
         if (array_key_exists('pieceCount', $data) && $data['pieceCount'] !== null) {
             $pieceCountRaw = $data['pieceCount'];
             if (!is_string($pieceCountRaw)) {
-                throw new MalformedDataException(sprintf('Property "pieceCount" must be string, got %s.', get_debug_type($pieceCountRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "pieceCount" must be string, got %s.', get_debug_type($pieceCountRaw)),
+                );
             }
             $pieceCount = Some::create($pieceCountRaw);
         }
         if (array_key_exists('statusDescription', $data) && $data['statusDescription'] !== null) {
             $statusDescriptionRaw = $data['statusDescription'];
             if (!is_string($statusDescriptionRaw)) {
-                throw new MalformedDataException(sprintf('Property "statusDescription" must be string, got %s.', get_debug_type($statusDescriptionRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "statusDescription" must be string, got %s.',
+                        get_debug_type($statusDescriptionRaw),
+                    ),
+                );
             }
             $statusDescription = Some::create($statusDescriptionRaw);
         }
         if (array_key_exists('timestamp', $data) && $data['timestamp'] !== null) {
             $timestampRaw = $data['timestamp'];
             if (!is_string($timestampRaw)) {
-                throw new MalformedDataException(sprintf('Property "timestamp" must be string, got %s.', get_debug_type($timestampRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "timestamp" must be string, got %s.', get_debug_type($timestampRaw)),
+                );
             }
             $timestamp = Some::create($timestampRaw);
         }
         if (array_key_exists('statusCode', $data) && $data['statusCode'] !== null) {
             $statusCodeRaw = $data['statusCode'];
             if (!is_string($statusCodeRaw)) {
-                throw new MalformedDataException(sprintf('Property "statusCode" must be string, got %s.', get_debug_type($statusCodeRaw)));
+                throw new MalformedDataException(
+                    sprintf('Property "statusCode" must be string, got %s.', get_debug_type($statusCodeRaw)),
+                );
             }
             $statusCode = Some::create($statusCodeRaw);
         }

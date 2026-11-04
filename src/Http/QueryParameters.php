@@ -69,9 +69,9 @@ final readonly class QueryParameters
     {
         $parameters = [];
         foreach ($this->parameters as $parameter) {
-            $parameters[] = $name === $parameter->name ? $parameter->withValue(
-                $transformer->transform($parameter->value),
-            ) : $parameter;
+            $parameters[] = $name === $parameter->name
+                ? $parameter->withValue($transformer->transform($parameter->value))
+                : $parameter;
         }
 
         return new self(...$parameters);

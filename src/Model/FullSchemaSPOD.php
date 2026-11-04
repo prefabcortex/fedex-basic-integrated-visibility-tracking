@@ -83,7 +83,12 @@ final readonly class FullSchemaSPOD implements SelfNormalizingModel
         if (array_key_exists('trackDocumentDetail', $data)) {
             $trackDocumentDetailRaw = $data['trackDocumentDetail'];
             if (!is_array($trackDocumentDetailRaw)) {
-                throw new MalformedDataException(sprintf('Property "trackDocumentDetail" must be object, got %s.', get_debug_type($trackDocumentDetailRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "trackDocumentDetail" must be object, got %s.',
+                        get_debug_type($trackDocumentDetailRaw),
+                    ),
+                );
             }
             /** @var non-empty-array<string, mixed> $trackDocumentDetailRawTyped */
             $trackDocumentDetailRawTyped = $trackDocumentDetailRaw;
@@ -92,11 +97,18 @@ final readonly class FullSchemaSPOD implements SelfNormalizingModel
         if (array_key_exists('trackDocumentSpecification', $data)) {
             $trackDocumentSpecificationRaw = $data['trackDocumentSpecification'];
             if (!(is_array($trackDocumentSpecificationRaw) && array_is_list($trackDocumentSpecificationRaw))) {
-                throw new MalformedDataException(sprintf('Property "trackDocumentSpecification" must be list, got %s.', get_debug_type($trackDocumentSpecificationRaw)));
+                throw new MalformedDataException(
+                    sprintf(
+                        'Property "trackDocumentSpecification" must be list, got %s.',
+                        get_debug_type($trackDocumentSpecificationRaw),
+                    ),
+                );
             }
             $trackDocumentSpecification = array_map(static function (mixed $value): TrackDocumentSpecification {
                 if (!is_array($value)) {
-                    throw new MalformedDataException(sprintf('Array item must be object, got %s.', get_debug_type($value)));
+                    throw new MalformedDataException(
+                        sprintf('Array item must be object, got %s.', get_debug_type($value)),
+                    );
                 }
                 /** @var non-empty-array<string, mixed> $valueTyped */
                 $valueTyped = $value;
@@ -112,7 +124,9 @@ final readonly class FullSchemaSPOD implements SelfNormalizingModel
             throw new MalformedDataException('Required property "trackDocumentDetail" is missing from the document.');
         }
         if ($trackDocumentSpecification === null) {
-            throw new MalformedDataException('Required property "trackDocumentSpecification" is missing from the document.');
+            throw new MalformedDataException(
+                'Required property "trackDocumentSpecification" is missing from the document.',
+            );
         }
 
         return new self($trackDocumentDetail, $trackDocumentSpecification, $additionalProperties);
